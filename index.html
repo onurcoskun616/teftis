@@ -13,7 +13,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 "Segoe UI",s
 .topnav{display:flex;gap:6px}
 #top button{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);color:#fff;padding:6px 13px;font-size:13.5px}#top button:hover{background:rgba(255,255,255,.22);filter:none}
 .tema{display:flex;align-items:center;gap:6px;font-size:12.5px;opacity:.95}.tema select{width:auto;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);padding:5px 8px}.tema select option{color:#111}
-@media(max-width:760px){.topnav{display:none}.brand small{display:none}}
+@media(max-width:760px){#top{position:static;height:auto;flex-wrap:wrap;padding:8px 16px;row-gap:6px}.topnav{display:flex;order:3;width:100%;overflow-x:auto;gap:6px}.topnav button{padding:6px 10px;font-size:13px;white-space:nowrap}.brand small{display:none}}
+#kayitUyari{position:sticky;top:0;z-index:50;background:#b42318;color:#fff;padding:10px 16px;font-size:14px;line-height:1.5}#kayitUyari button{margin-left:6px;background:#fff;color:#b42318;border:0;padding:4px 10px;border-radius:6px;font-weight:600;cursor:pointer}
+.yedek-uyari{background:#fff4e5;border:1px solid #f0b46a;color:#7a4100;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px;line-height:1.5}.yedek-uyari button{margin-left:6px}.yedek-ok{color:var(--muted,#667);font-size:13px;margin:6px 0}
+:root[data-tema=koyu] .yedek-uyari,:root[data-tema=lacivert] .yedek-uyari{background:#3a2a12;border-color:#8a5a1a;color:#ffd9a8}
 button{font:inherit;background:var(--acc);color:var(--on);border:0;border-radius:8px;padding:8px 15px;cursor:pointer;transition:background .15s,transform .05s,box-shadow .15s;font-weight:500}button:hover{background:var(--acch)}button:active{transform:translateY(1px)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 button.sm{padding:3px 10px;background:transparent;color:var(--mut);border:1px solid var(--line2);font-weight:400}button.sm:hover{background:var(--surface2);color:var(--ink)}
@@ -33595,7 +33598,7 @@ let DB = yeniDB(), S = null;
 function yukle() {
   try {
     const j = localStorage.getItem(KEY);
-    if (j) { DB = Object.assign(yeniDB(), JSON.parse(j)); }
+    if (j) { DB = Object.assign(yeniDB(), JSON.parse(j)); KAYIT.kb = Math.round(j.length / 1024); }
     else {
       const j1 = localStorage.getItem(KEY1);
       if (j1) {
@@ -33606,6 +33609,12 @@ function yukle() {
       }
     }
   } catch (e) {}
+  normalizeDB();
+}
+function normalizeDB() {
+  if (!Array.isArray(DB.isyerleri)) DB.isyerleri = [];
+  ['katalogOv', 'yilAyar'].forEach(k => { if (!DB[k] || typeof DB[k] !== 'object') DB[k] = {}; });
+  ['katalogEk', 'katalogGizli', 'katalogSilinen'].forEach(k => { if (!Array.isArray(DB[k])) DB[k] = []; });
   DB.ayar = Object.assign(yeniDB().ayar, DB.ayar || {});
   if (!DB.ayar.logo) { DB.ayar.logo = LOGO_VARSAYILAN; DB.ayar.logoOran = 1; }
   DB.isyerleri.forEach(w => { const d = yeniIsyeri(w.ad, w.yil); Object.keys(d).forEach(k => { if (w[k] === undefined) w[k] = d[k]; }); ['takip', 'sec', 'rapor', 'istat', 'gorev', 'kunye', 'evrak'].forEach(k => { w[k] = Object.assign({}, d[k], w[k]); }); });
@@ -33630,7 +33639,41 @@ function eskiDuzelt(s, id) {
 }
 function sec() { S = DB.isyerleri.find(w => w.id === DB.acik) || null; }
 let kt = null;
-function kaydet() { clearTimeout(kt); kt = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }, 300); }
+const IDB_AD = 'teftis_db', IDB_DEPO = 'kv';
+let IDB = null, KAYIT = { ls: null, idb: null, kb: 0 };
+function idbAc() { return new Promise((res, rej) => { try { const r = indexedDB.open(IDB_AD, 1); r.onupgradeneeded = () => r.result.createObjectStore(IDB_DEPO); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } }); }
+async function idb() { if (!IDB) IDB = await idbAc(); return IDB; }
+async function idbYaz(v) { const d = await idb(); return new Promise((res, rej) => { const tx = d.transaction(IDB_DEPO, 'readwrite'); tx.objectStore(IDB_DEPO).put(v, KEY); tx.oncomplete = () => res(true); tx.onerror = () => rej(tx.error); tx.onabort = () => rej(tx.error); }); }
+async function idbOku() { const d = await idb(); return new Promise((res, rej) => { const r = d.transaction(IDB_DEPO).objectStore(IDB_DEPO).get(KEY); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+function kayitUyari() {
+  let el = document.getElementById('kayitUyari');
+  const hata = KAYIT.ls === false && KAYIT.idb === false;
+  if (!hata) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'kayitUyari'; document.body.insertBefore(el, document.body.firstChild); }
+  el.innerHTML = '<b>⚠ Veriler kaydedilemiyor.</b> Tarayıcının bu programa ayırdığı alan dolu ya da tarayıcı kaydetmeye izin vermiyor. Sayfayı kapatırsanız son değişiklikler kaybolur. Hemen <button data-act="yedekAl">Tüm verileri yedekle</button> ve ardından tamamlanan eski işyerlerini silerek yer açın.';
+}
+function kaydetSimdi() {
+  clearTimeout(kt); kt = null;
+  DB._t = Date.now();
+  let s; try { s = JSON.stringify(DB); } catch (e) { return; }
+  KAYIT.kb = Math.round(s.length / 1024);
+  try { localStorage.setItem(KEY, s); KAYIT.ls = true; } catch (e) { KAYIT.ls = false; try { localStorage.removeItem(KEY); } catch (e2) {} }
+  const bitti = () => kayitUyari();
+  if (typeof indexedDB === 'undefined') { KAYIT.idb = false; bitti(); return; }
+  idbYaz(s).then(() => { KAYIT.idb = true; bitti(); }, () => { KAYIT.idb = false; bitti(); });
+  bitti();
+}
+function kaydet() { clearTimeout(kt); kt = setTimeout(kaydetSimdi, 300); }
+window.addEventListener('beforeunload', () => { if (kt) kaydetSimdi(); });
+async function idbdenYukle() {
+  try {
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+    const v = await idbOku(); KAYIT.idb = true;
+    if (!v) { if (DB.isyerleri.length) kaydetSimdi(); return; }
+    const o = JSON.parse(v);
+    if ((o._t || 0) > (DB._t || 0)) { const lsVar = !!DB._t, ekran = DB.ekran, acik = DB.acik; DB = Object.assign(yeniDB(), o); if (lsVar) { DB.ekran = ekran; DB.acik = acik; } normalizeDB(); ciz(); }
+  } catch (e) { KAYIT.idb = false; }
+}
 
 /* ───────────── yardımcılar ───────────── */
 const $ = (s, r) => (r || document).querySelector(s);
@@ -34310,7 +34353,7 @@ function sekmeTakip() {
 function sekmeKunye() {
   return '<h2>Künye</h2><div class="grid">' + f('İşyeri kısa adı', 'kunye.kisa') + f('Sicil No', 'kunye.sicilNo') + f('İşyerinin unvanı (her işyeri ayrı satır)', 'kunye.unvanlar', { area: 1, cls: 'w2' }) + f('İşveren unvanı', 'kunye.isveren', { cls: 'w2' }) + f('İşveren vekili', 'kunye.vekil') + f('Vekaletname', 'kunye.vekaletname', { cls: 'w2' }) + f('Telefon/Faks', 'kunye.tel') + f('SGK sicil numaraları (her satıra bir tane)', 'kunye.sgk', { area: 1, cls: 'w2' }) + f('İşyeri adresleri (her satıra bir tane)', 'kunye.adresler', { area: 1, cls: 'w2' }) + f('Tebligat adresi', 'kunye.tebligat', { area: 1, rows: 2, cls: 'w2' }) +
     '</div><h2>Görev</h2><div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + f('Görev yazısı tarihi', 'gorev.tarih') + f('Görev yazısı sayısı', 'gorev.sayi') + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Ad SOYAD” biçimine (ör. “Ahmet YILMAZ”) otomatik getirilir.</p><div class="grid">' +
-    S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' })).join('') +
+    S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' }) + (i >= 2 ? '<div class="f"><span>&nbsp;</span><button class="sm" data-act="mufSil" data-i="' + i + '">Müfettiş ' + (i + 1) + '’i kaldır</button></div>' : '')).join('') + '<div class="f w3"><button class="sm" data-act="mufEkle">+ Müfettiş ekle</button></div>' +
     '</div><h3>1. aşama</h3><div class="grid">' + f('İnceleme tarihleri', 'gorev.tarihler1', { ph: 'gg, gg, gg.aa.yyyy ve gg.aa.yyyy' }) + f('Belge inceleme dönemi (boş bırakırsanız otomatik: ' + (donem1()) + ')', 'gorev.donem') + f('Tutanak tarihi', 'gorev.tarih1', { ph: 'gg/aa/yyyy' }) + f('Tutanak sayfa sayısı (boşsa sarı boşluk kalır)', 'gorev.sayfa1') +
     '</div><h3>Noksanlık bildirimi</h3><div class="grid">' + f('Bildirim sayısı', 'gorev.bildirimSayi', { ph: 'sayı/sicil-sayı/sicil' }) + f('Bildirim tarihi (1. aşama tutanak tarihi)', 'gorev.tarih1', { ph: 'gg/aa/yyyy' }) + f('Kontrol tarihi', 'gorev.kontrolTarihi', { ph: 'gg.aa.yyyy' }) + f('Kontrol saati', 'gorev.kontrolSaat') + '<label class="f"><span>Verilen süre (gün) — tarihlerden otomatik</span><input id="gunOto" readonly value="' + esc(gunHesap()) + '" placeholder="Tarihleri girin"></label>' + f('Süreyi elle yazmak isterseniz (isteğe bağlı)', 'gorev.gunEl') +
     '</div><h3>2. aşama</h3><div class="grid">' + f('Kontrol tarihleri', 'gorev.tarihler2', { ph: 'gg, gg, gg.aa.yyyy' }) + f('Tutanak tarihi', 'gorev.tarih2') + f('Tutanak sayfa sayısı (boşsa sarı boşluk kalır)', 'gorev.sayfa2') +
@@ -34475,7 +34518,7 @@ function adimBitti(k) {
   const G = S.gorev, T = S.takip, R = S.rapor;
   return !!({ gorev: S.gorevler.length && S.kunye.isveren, ifade: R.ifadeler.length > 0, evrak: S.evrak.tarih, as1: G.tarih1, nok: bildirimSayisi() && G.kontrolTarihi, as2: G.tarih2, rapor: T.raporTeslim || G.raporTarihNo }[k]);
 }
-function yeniGorev() { return { sgk: '', adres: '', isveren: '', unvan: '', otomasyon: '', gTarih: '', gSayi: '', sure: '', m1ad: '', m1sicil: '', m2ad: '', m2sicil: '', onceki: 'Hayır', aciklama: '' }; }
+function yeniGorev() { return { sgk: '', adres: '', isveren: '', unvan: '', otomasyon: '', gTarih: '', gSayi: '', sure: '', m1ad: '', m1sicil: '', m2ad: '', m2sicil: '', m3ad: '', m3sicil: '', onceki: 'Hayır', aciklama: '' }; }
 const uniq = a => a.filter((x, i) => x && a.indexOf(x) === i);
 
 /* görevlerden künye/istatistik/rapor bilgilerini türet */
@@ -34491,7 +34534,8 @@ function senkron(w) {
   w.gorev.tarih = tr.join(' ve '); w.gorev.sayi = sy.join(' ve ');
   w.gorev.otomasyon = uniq(g.map(x => T(x.otomasyon))).join(', ');
   const ms = w.gorev.mufettisler = w.gorev.mufettisler || [];
-  [1, 2].forEach((no, i) => {
+  const mufN = Math.max(2, ...g.map(x => Object.keys(x).reduce((a, k) => { const m = k.match(/^m(\d+)ad$/); return m && T(x[k]) ? Math.max(a, +m[1]) : a; }, 0)));
+  Array.from({ length: mufN }, (_, i) => i + 1).forEach((no, i) => {
     if (!ms[i]) ms[i] = { ad: '', sicil: '', bildirimNo: '', evrakNo: '' };
     const ad = uniq(g.map(x => T(x['m' + no + 'ad'])))[0] || '', sc = uniq(g.map(x => T(x['m' + no + 'sicil'])))[0] || '';
     if (ad && !T(ms[i].ad)) ms[i].ad = ad; if (sc && !T(ms[i].sicil)) ms[i].sicil = sc;
@@ -34512,7 +34556,7 @@ function gunHesap() {
 function gunEff() { return String(S.gorev.gunEl || '').trim() || gunHesap() || '[süre]'; }
 
 /* ───────────── Excel (şablon + yükleme) ───────────── */
-const XLS_BASLIK = ['SGK Sicil No', 'İşyeri Adresi', 'İşveren Unvanı', 'Otomasyon No', 'Görev Emri Tarihi', 'Görev Emri Sayısı', 'Görev Süresi (ör. 3 ay)', 'Müfettiş 1 Adı Soyadı', 'Müfettiş 1 Sicil No', 'Müfettiş 2 Adı Soyadı', 'Müfettiş 2 Sicil No', 'Daha Önce Teftiş Yapıldı mı? (Evet/Hayır)', 'Önceki Teftiş Açıklaması', 'İşyeri Unvanı (isteğe bağlı)'];
+const XLS_BASLIK = ['SGK Sicil No', 'İşyeri Adresi', 'İşveren Unvanı', 'Otomasyon No', 'Görev Emri Tarihi', 'Görev Emri Sayısı', 'Görev Süresi (ör. 3 ay)', 'Müfettiş 1 Adı Soyadı', 'Müfettiş 1 Sicil No', 'Müfettiş 2 Adı Soyadı', 'Müfettiş 2 Sicil No', 'Daha Önce Teftiş Yapıldı mı? (Evet/Hayır)', 'Önceki Teftiş Açıklaması', 'İşyeri Unvanı (isteğe bağlı)', 'Müfettiş 3 Adı Soyadı (isteğe bağlı)', 'Müfettiş 3 Sicil No (isteğe bağlı)'];
 const xe = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 function xlsSatir(r, vals, st) { return '<row r="' + r + '">' + vals.map((v, i) => '<c r="' + String.fromCharCode(65 + i) + r + '" t="inlineStr"' + (st ? ' s="' + st + '"' : '') + '><is><t xml:space="preserve">' + xe(v) + '</t></is></c>').join('') + '</row>'; }
 async function xlsSablonIndir() {
@@ -34568,7 +34612,7 @@ function xlsGorevler(rows) {
   const map = {};
   (rows[0] || []).forEach((h, i) => {
     const s = n(h);
-    let k = null; const mm = s.match(/müfettiş\D*([12])|([12])\D*müfettiş/);
+    let k = null; const mm = s.match(/müfettiş\D*([1-9])|([1-9])\D*müfettiş/);
     if (/müfettiş/.test(s)) k = 'm' + ((mm && (mm[1] || mm[2])) || '1') + (/sicil/.test(s) ? 'sicil' : 'ad');
     else k = /süre/.test(s) ? 'sure' : /daha önce/.test(s) ? 'onceki' : /açıklama/.test(s) ? 'aciklama' : /otomasyon/.test(s) ? 'otomasyon' : (/görev/.test(s) && /tarih/.test(s)) ? 'gTarih' : (/görev/.test(s) && /sayı/.test(s)) ? 'gSayi' : /adres/.test(s) ? 'adres' : /işveren/.test(s) ? 'isveren' : /unvan|ünvan/.test(s) ? 'unvan' : /sgk|sicil/.test(s) ? 'sgk' : null;
     if (k && map[k] === undefined) map[k] = i;
@@ -34582,7 +34626,47 @@ function isyeriAdiOner(g) {
   const k = (g.isveren || 'İşyeri').split(/\s+/).filter(x => dur.indexOf(x.toLocaleUpperCase('tr-TR')) < 0);
   return (k.length ? k : [g.isveren]).slice(0, 3).join(' ');
 }
-async function xlsYukle(file) { return gorevListesiEkle(xlsGorevler(await xlsOku(file)).map(g => { g.adres = adresDuzenle(g.adres); return g; })); }
+function csvSatirlar(txt) {
+  txt = txt.replace(/^﻿/, '');
+  const ilk = txt.split(/\r?\n/)[0] || '', ayr = [';', '\t', ','].sort((a, b) => ilk.split(b).length - ilk.split(a).length)[0];
+  const rows = []; let r = [], v = '', q = false;
+  for (let i = 0; i < txt.length; i++) {
+    const c = txt[i];
+    if (q) { if (c === '"') { if (txt[i + 1] === '"') { v += '"'; i++; } else q = false; } else v += c; }
+    else if (c === '"') q = true;
+    else if (c === ayr) { r.push(v.trim()); v = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && txt[i + 1] === '\n') i++; r.push(v.trim()); rows.push(r); r = []; v = ''; }
+    else v += c;
+  }
+  if (v || r.length) { r.push(v.trim()); rows.push(r); }
+  return rows.filter(x => x.some(y => y));
+}
+async function csvOku(file) {
+  const buf = await file.arrayBuffer();
+  let t = new TextDecoder('utf-8').decode(buf);
+  if (/�/.test(t)) { try { t = new TextDecoder('windows-1254').decode(buf); } catch (e) {} }
+  return csvSatirlar(t);
+}
+function cdnYukle(src) { return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = src; sc.onload = res; sc.onerror = () => rej(new Error('yüklenemedi')); document.head.appendChild(sc); }); }
+async function xlsEskiOku(file) {
+  if (!window.XLSX) {
+    try { await cdnYukle('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); }
+    catch (e) { throw new Error('Eski Excel (.xls) dosyasını okumak için internet bağlantısı gerekiyor. İnternet yoksa dosyayı Excel’de açıp “Farklı Kaydet → Excel Çalışma Kitabı (.xlsx)” ile kaydedip yükleyin.'); }
+  }
+  const wb = window.XLSX.read(new Uint8Array(await file.arrayBuffer()), { type: 'array', cellDates: true });
+  const sh = wb.Sheets[wb.SheetNames[0]];
+  return window.XLSX.utils.sheet_to_json(sh, { header: 1, raw: true, defval: '' }).map(r => r.map(v => v instanceof Date ? p2(v.getDate()) + '.' + p2(v.getMonth() + 1) + '.' + v.getFullYear() : String(v == null ? '' : v).trim()));
+}
+async function xlsYukle(file) {
+  const ad = String(file.name || '').toLowerCase();
+  let rows;
+  if (/\.csv$|\.txt$/.test(ad)) rows = await csvOku(file);
+  else if (/\.xls$/.test(ad)) rows = await xlsEskiOku(file);
+  else { try { rows = await xlsOku(file); } catch (e) { throw new Error('dosya .xlsx biçiminde açılamadı. Dosyayı Excel’de açıp “Farklı Kaydet → Excel Çalışma Kitabı (.xlsx)” ile yeniden kaydedin.'); } }
+  const gl = xlsGorevler(rows);
+  if (!gl.length) throw new Error('dosyada “SGK Sicil No” sütunu dolu satır bulunamadı. İlk satırda başlıklar, altındaki satırlarda işyerleri olmalı.');
+  return gorevListesiEkle(gl.map(g => { g.adres = adresDuzenle(g.adres); return g; }));
+}
 async function pdfjsYukle() {
   if (window.__pdfjs) return window.__pdfjs;
   const mk = id => URL.createObjectURL(new Blob([document.getElementById(id).textContent], { type: 'text/javascript' }));
@@ -34630,36 +34714,46 @@ function adresDuzenle(ham, ilce, il, ilceIl) {
 async function gorevPdfOku(file) {
   const lib = await pdfjsYukle(), doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise, sayfalar = [];
   for (let p = 1; p <= doc.numPages; p++) { const tc = await (await doc.getPage(p)).getTextContent(); sayfalar.push(tc.items.filter(it => it.str.trim()).map(it => ({ s: it.str.trim(), x: it.transform[4], y: it.transform[5] }))); }
-  if (!sayfalar.length) return [];
+  const DIAG = { sayfa: doc.numPages, oge: sayfalar.reduce((a, x) => a + x.length, 0), sgk: 0 };
+  if (!sayfalar.length) { const o = []; o.diag = DIAG; return o; }
   const bas = sayfalar[0], metin = bas.map(i => i.s).join(' ');
   const sayi = (metin.match(/Sayı\s*:\s*\d+-\d+-(\d+)/) || [])[1] || '', dm = metin.match(/(\d{2})\/(\d{2})\/(\d{4})/), tarih = dm ? dm[1] + '.' + dm[2] + '.' + dm[3] : '';
   const dItem = bas.find(i => /^Yılı\s*\/\s*Dönemi/.test(i.s)), donem = dItem ? dItem.s.replace(/^Yılı\s*\/\s*Dönemi\s*:\s*/, '') : '';
   const muf = bas.map(i => (i.s.match(/^Sayın (.+?) \(İş Müfettişi\)$/) || [])[1]).filter(Boolean);
   const out = [];
   sayfalar.forEach(items => {
-    const sic = items.filter(i => /^\d{26}$/.test(i.s)).sort((a, b) => b.y - a.y);
+    const sic = items.filter(i => /^\d{26}$/.test(i.s.replace(/[\s.]/g, ''))).map(i => Object.assign({}, i, { s: i.s.replace(/[\s.]/g, '') })).sort((a, b) => b.y - a.y);
+    DIAG.sgk += sic.length;
+    const lbl = items.filter(i => /^(Unvan|Adres)\s*:/.test(i.s)), X0 = lbl.length ? Math.min.apply(null, lbl.map(i => i.x)) - 5 : 160, X1 = X0 + 230;
     sic.forEach((r, ix) => {
       const ust = ix === 0 ? r.y + 30 : (r.y + sic[ix - 1].y) / 2, alt = ix === sic.length - 1 ? r.y - 45 : (r.y + sic[ix + 1].y) / 2;
       const bolge = items.filter(i => i.y <= ust && i.y > alt);
       const gn = (bolge.find(i => /^S\d{10}$/.test(i.s)) || {}).s || '';
-      const kol = bolge.filter(i => i.x >= 160 && i.x < 390).sort((a, b) => (b.y - a.y) || (a.x - b.x));
+      const kol = bolge.filter(i => i.x >= X0 && i.x < X1).sort((a, b) => (b.y - a.y) || (a.x - b.x));
       const satirlar = []; kol.forEach(i => { const son = satirlar[satirlar.length - 1]; if (son && Math.abs(son.y - i.y) < 2) son.p.push(i.s); else satirlar.push({ y: i.y, p: [i.s] }); });
       let mod = '', un = [], ad = [];
       satirlar.map(l => l.p.join(' ')).forEach(t => { if (/^Unvan:/.test(t)) { mod = 'u'; t = t.replace(/^Unvan:\s*/, ''); } else if (/^Adres:/.test(t)) { mod = 'a'; t = t.replace(/^Adres:\s*/, ''); } if (mod === 'u') un.push(t); else if (mod === 'a') ad.push(t); });
       let ilce = ''; if (ad.length > 1 && /^[A-ZÇĞİÖŞÜ.' -]+ \/ [A-ZÇĞİÖŞÜ.' -]+$/.test(ad[ad.length - 1])) ilce = ad.pop();
       const g = yeniGorev();
       g.sgk = r.s.replace(/^(\d)(\d{4})(\d{2})(\d{2})(\d{7})(\d{3})(\d{2})(\d{2})(\d{3})$/, '$1.$2.$3.$4.$5.$6.$7.$8.$9');
-      g._ham = ad.join(' '); g._il = ilce; g.isveren = yazimBicim(un.join(' ').replace(/\s*__\s*/g, ' - ').replace(/\s+/g, ' ').trim()); g.otomasyon = gn; g.gTarih = tarih; g.gSayi = sayi; g.sure = donem; g.m1ad = muf[0] || ''; g.m2ad = muf[1] || ''; g.adEk = ilce ? adresBicim(ilce.split('/').pop().trim()).replace('Mılas', 'Milas') : (gn ? gn.slice(-3) : '');
+      g._ham = ad.join(' '); g._il = ilce; g.isveren = yazimBicim(un.join(' ').replace(/\s*__\s*/g, ' - ').replace(/\s+/g, ' ').trim()); g.otomasyon = gn; g.gTarih = tarih; g.gSayi = sayi; g.sure = donem; g.m1ad = muf[0] || ''; g.m2ad = muf[1] || ''; g.m3ad = muf[2] || ''; g.adEk = ilce ? adresBicim(ilce.split('/').pop().trim()).replace('Mılas', 'Milas') : (gn ? gn.slice(-3) : '');
       out.push(g);
     });
   });
   const ilceIl = {}; out.forEach(g => { const q = String(g._il || '').split('/').map(x => x.trim()); if (q[1]) ilceIl[q[1].toLocaleUpperCase('tr-TR')] = q[0]; });
   out.forEach(g => { const q = String(g._il || '').split('/').map(x => x.trim()); g.adres = adresDuzenle(g._ham, q[1] || '', q[0] || '', ilceIl); delete g._ham; delete g._il; });
+  out.diag = DIAG;
   return out;
 }
 async function pdfGorevYukle(file) {
-  const g = await gorevPdfOku(file); if (!g.length) throw new Error('görev listesi satırı bulunamadı');
-  return gorevListesiEkle(g).replace(/\.$/, '') + ' (PDF’den ' + g.length + ' satır okundu).';
+  const g = await gorevPdfOku(file), d = g.diag || {};
+  if (!g.length) {
+    if (!d.oge) throw new Error('PDF’te okunabilir metin yok (' + (d.sayfa || 0) + ' sayfa). Taranmış (resim) bir belge olabilir. Görev listesini Excel şablonuna girip “Excel yükle” ile ekleyin.');
+    throw new Error(d.sayfa + ' sayfada metin okundu ancak 26 haneli SGK sicil numarası bulunamadı. Bu PDF Bakanlık görev listesi düzeninde olmayabilir. Görev listesini Excel şablonuna girip “Excel yükle” ile ekleyin.');
+  }
+  const bos = g.filter(x => !String(x.isveren || '').trim()).length, adressiz = g.filter(x => !String(x.adres || '').trim()).length;
+  const uy = (bos ? ' ' + bos + ' satırda işveren unvanı okunamadı' : '') + (adressiz ? (bos ? ',' : '') + ' ' + adressiz + ' satırda adres okunamadı' : '');
+  return gorevListesiEkle(g).replace(/\.$/, '') + ' (PDF’den ' + g.length + ' satır okundu).' + (uy ? ' Dikkat:' + uy + '; bu işyerlerini açıp “Görev ve künye” adımında kontrol edin.' : '');
 }
 function gorevListesiEkle(g) {
   const var_ = new Map(); DB.isyerleri.forEach(w => (w.gorevler || []).forEach(x => var_.set(String(x.sgk).trim(), w)));
@@ -34771,7 +34865,7 @@ function adimGorev() {
     '<div class="card ilis"><b>İlişkili görev ekle</b><p class="not">Listedeki başka bir işyeri görevini bu dosyaya birleştirir (o kayıt listeden kalkar).</p>' +
     (baskaDosya.length ? '<div class="bar2"><select id="birlesSec">' + baskaDosya.map(w => '<option value="' + w.id + '">' + esc(w.ad) + ' — ' + esc((w.gorevler[0] && w.gorevler[0].sgk) || '') + '</option>').join('') + '</select><button data-act="birlestir">Bu dosyaya birleştir</button></div>' : '<p class="not">Birleştirilecek başka görev yok.</p>') + '</div>');
   h += bolum('Görevlendirme', '<div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + '<div class="f"><span>Görev yazısı tarih / sayı (görevlerden otomatik)</span><input readonly value="' + esc(S.gorev.tarih + ' — ' + S.gorev.sayi) + '"></div>' + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Ad SOYAD” biçimine (ör. “Ahmet YILMAZ”) otomatik getirilir.</p><div class="grid">' +
-    S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' })).join('') + '</div>');
+    S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' }) + (i >= 2 ? '<div class="f"><span>&nbsp;</span><button class="sm" data-act="mufSil" data-i="' + i + '">Müfettiş ' + (i + 1) + '’i kaldır</button></div>' : '')).join('') + '<div class="f w3"><button class="sm" data-act="mufEkle">+ Müfettiş ekle</button></div>' + '</div>');
   const K = S.kunye;
   h += bolum('İşveren ve işveren vekili', '<p class="not">İşveren unvanı ve vekil bilgileri yalnızca burada girilir. 1. ve 2. aşama tutanak, noksanlık bildirimi, evrak isteme ve rapor kapağı bu bilgilerden otomatik oluşur. SGK sicil numarası, adres ve işyeri unvanı görev kartlarından gelir.</p><div class="grid">' + f('İşveren unvanı', 'kunye.isveren', { cls: 'w3' }) + f('İşveren vekili', 'kunye.vekil') + f('Vekaletname (noterlik, tarih, yevmiye no)', 'kunye.vekaletname', { cls: 'w2' }) + f('Telefon/Faks', 'kunye.tel', { ph: '(0xxx) xxx xx xx / -' }) + f('Tebligat adresi (boşsa ilk işyeri adresi)', 'kunye.tebligat', { cls: 'w2' }) + f('İşyeri sicil no', 'kunye.sicilNo', { ph: '-' }) + f('Dosya kısa adı', 'kunye.kisa') + '</div>');
   h += bolum('Belgelere aktarılacak künye (önizleme)', '<div class="onizle" id="kunyeOnizle">' + kunyeBloklari().map(prevBlok).join('') + '</div>', false);
@@ -34909,9 +35003,17 @@ document.addEventListener('click', e => {
   else if (a === 'gunSil') { const g = o.gunler[t.dataset.w]; if (g) { g[t.dataset.s] = g[t.dataset.s].filter(x => x !== t.dataset.id); gunSenkron(t.dataset.w); } }
   kaydet(); ciz();
 });
+function yedekGun() { if (!DB.sonYedek) return null; return Math.floor((Date.now() - new Date(DB.sonYedek).getTime()) / 86400000); }
+function yedekHatirlat() {
+  if (!DB.isyerleri.length) return '';
+  const g = yedekGun();
+  const dolu = KAYIT.kb ? ' Kayıtlı veri: ' + (KAYIT.kb >= 1024 ? (KAYIT.kb / 1024).toFixed(1).replace('.', ',') + ' MB' : KAYIT.kb + ' KB') + '.' : '';
+  if (g !== null && g < 7) return '<div class="yedek-ok">Son yedek: ' + (g === 0 ? 'bugün' : g + ' gün önce') + '.' + dolu + ' <button class="sm" data-act="yedekAl">Yedekle</button></div>';
+  return '<div class="yedek-uyari"><b>' + (g === null ? 'Henüz hiç yedek alınmadı.' : 'Son yedek ' + g + ' gün önce alındı.') + '</b> Bilgiler yalnızca bu tarayıcıda duruyor; tarayıcı verileri silinirse kaybolur.' + dolu + ' <button data-act="yedekAl">Şimdi yedekle</button></div>';
+}
 function ekranHome() {
   const dev = DB.isyerleri.filter(w => !w.tamamlandi).length, bit = DB.isyerleri.filter(w => w.tamamlandi).length;
-  return '<div class="home"><div class="hero"><h1>' + esc(DB.ayar.programAdi || 'Teftiş Otomasyon Sistemi') + '</h1><p>Teftiş belgeleri, takvim ve notlar</p></div><div class="homegrid">' +
+  return '<div class="home"><div class="hero"><h1>' + esc(DB.ayar.programAdi || 'Teftiş Otomasyon Sistemi') + '</h1><p>Teftiş belgeleri, takvim ve notlar</p></div>' + yedekHatirlat() + '<div class="homegrid">' +
     '<button class="big" data-act="git" data-e="liste"><span class="ic">📋</span><b>Programlı Teftiş</b><span>İşyeri listesi, evrak isteme, tutanaklar, noksanlık bildirimi ve rapor</span><em>' + dev + ' devam eden · ' + bit + ' tamamlanan</em></button>' +
     '<button class="big off" disabled><span class="ic">📨</span><b>Şikayet İncelemesi</b><span>Bu bölüm sonraki aşamada geliştirilecek</span></button>' +
     '<button class="big off" disabled><span class="ic">⚖️</span><b>Bilirkişilik</b><span>İleride kullanılacak</span></button></div>' +
@@ -34927,12 +35029,12 @@ function ekranListe() {
   const satir = w => { const a = asama(w); return '<tr><td style="width:34px"><input type="checkbox" data-sec="' + w.id + '"' + (SECILI[w.id] ? ' checked' : '') + '></td><td><b>' + esc(w.ad) + '</b><div class="not">' + esc(w.kunye.isveren) + '</div></td><td>' + emriHucre(w) + '</td><td>' + sureHucre(w) + '</td><td>' + esc(w.yil) + '</td><td><span class="chip ' + asamaRenk(a[0]) + '">' + esc(a[0]) + '</span><div class="not">' + esc(a[1]) + '</div></td><td class="act"><button data-act="ac" data-id="' + w.id + '">Aç</button>' + (w.tamamlandi ? '<button class="sm" data-act="geriAl" data-id="' + w.id + '">Geri al</button>' : '<button class="sm" data-act="tamamla" data-id="' + w.id + '">Görev tamamlandı</button>') + '<button class="sm" data-act="wSil" data-id="' + w.id + '">Sil</button></td></tr>'; };
   const dev = gorunen.filter(w => !w.tamamlandi), bit = gorunen.filter(w => w.tamamlandi);
   const tab = (l, g) => l.length ? '<table class="lst"><tr><th><input type="checkbox" title="Tümünü seç" data-sec-hepsi="' + g + '"' + (l.every(w => SECILI[w.id]) ? ' checked' : '') + '></th><th>İşyeri</th><th>Görev emri<br><span class="not">tarih / sayı</span></th><th>Görev süresi</th><th>Yıl</th><th>Aşama</th><th class="act"><button class="sm" data-act="secSil" data-g="' + g + '"' + (l.some(w => SECILI[w.id]) ? '' : ' disabled') + '>Seçilenleri sil (' + l.filter(w => SECILI[w.id]).length + ')</button><button class="sm" data-act="tumSil" data-g="' + g + '">Tümünü sil (' + l.length + ')</button></th></tr>' + l.map(satir).join('') + '</table>' : '<p class="not">Kayıt yok.</p>';
-  return '<div class="bar"><h2>Programlı Teftiş — İşyerleri</h2></div>' + (listeMsg ? '<div class="tamam">' + esc(listeMsg) + '</div>' : '') +
+  return '<div class="bar"><h2>Programlı Teftiş — İşyerleri</h2></div>' + yedekHatirlat() + (listeMsg ? '<div class="tamam">' + esc(listeMsg) + '</div>' : '') +
     '<div class="card tool"><div class="grid"><label class="f"><span>Yıl</span><select id="yilSec">' + yillar.map(y => '<option' + (flt === y ? ' selected' : '') + '>' + y + '</option>').join('') + '<option value="tum"' + (flt === 'tum' ? ' selected' : '') + '>Tümü</option></select></label></div>' +
-    '<div class="tool-b"><button class="gh" data-act="xlsSablon">⬇ Excel şablonunu indir</button><label class="btn-up">⬆ Excel yükle<input type="file" id="xlsDosya" accept=".xlsx" hidden></label><label class="btn-up">📄 Görev listesi (PDF) yükle<input type="file" id="pdfGorev" accept=".pdf" hidden></label></div></div>' +
+    '<div class="tool-b"><button class="gh" data-act="xlsSablon">⬇ Excel şablonunu indir</button><label class="btn-up">⬆ Excel / CSV yükle<input type="file" id="xlsDosya" accept=".xlsx,.xls,.csv" hidden></label><label class="btn-up">📄 Görev listesi (PDF) yükle<input type="file" id="pdfGorev" accept=".pdf" hidden></label></div></div>' +
     '<details class="card"><summary>Elle yeni işyeri ekle</summary><div class="grid"><label class="f"><span>İşyeri adı</span><input id="yeniAd" placeholder="İşyeri unvanı"></label><label class="f"><span>Teftiş yılı</span><input id="yeniYil" value="' + (flt === 'tum' ? BUGUN.getFullYear() : flt) + '"></label><button data-act="wEkle">+ İşyeri ekle</button></div></details>' +
     '<h3>Devam eden görevler (' + dev.length + ')</h3>' + tab(dev, 'dev') + '<h3>Tamamlanan görevler (' + bit.length + ')</h3>' + tab(bit, 'bit') +
-    '<div class="bar2"><button class="gh" data-act="git" data-e="katalog">Tespit kataloğu</button> <button class="gh" data-act="git" data-e="yil">Yıl ayarları (yeniden değerleme)</button> <button class="gh" data-act="git" data-e="ayar">Belge ayarları (logo, başlık)</button></div>';
+    '<div class="bar2"><button class="gh" data-act="git" data-e="katalog">Tespit kataloğu</button> <button class="gh" data-act="git" data-e="yil">Yıl ayarları (yeniden değerleme)</button> <button class="gh" data-act="git" data-e="ayar">Belge ayarları (logo, başlık)</button> <button class="gh" data-act="yedekAl">Tüm verileri yedekle</button> <label class="gh">Yedekten yükle<input type="file" id="yedekAc" accept=".json" hidden></label></div>';
 }
 let listeMsg = '';
 
@@ -35055,7 +35157,7 @@ document.addEventListener('change', async e => {
   else if (t.id === 'logoDosya') { const fl = t.files[0]; if (!fl) return; try { DB.ayar.logo = await logoHazirla(fl); } catch (er) { alert('Logo okunamadı.'); } kaydet(); ciz(); }
   else if (t.id === 'xlsDosya') { const fl = t.files[0]; if (!fl) return; try { listeMsg = await xlsYukle(fl); } catch (er) { listeMsg = 'Excel okunamadı: ' + er.message; } t.value = ''; kaydet(); ciz(); }
   else if (t.id === 'pdfGorev') { const fl = t.files[0]; if (!fl) return; try { listeMsg = await pdfGorevYukle(fl); } catch (er) { listeMsg = 'PDF okunamadı: ' + er.message; } t.value = ''; kaydet(); ciz(); }
-  else if (t.id === 'yedekAc') { const fl = t.files[0]; if (!fl) return; const r = new FileReader(); r.onload = () => { try { if (!confirm('Mevcut veriler yedekteki verilerle değiştirilsin mi?')) return; DB = Object.assign(yeniDB(), JSON.parse(r.result)); DB.ayar = Object.assign(yeniDB().ayar, DB.ayar || {}); if (!DB.ayar.logo) DB.ayar.logo = LOGO_VARSAYILAN; kaydet(); ciz(); } catch (er) { alert('Yedek dosyası açılamadı'); } }; r.readAsText(fl); t.value = ''; }
+  else if (t.id === 'yedekAc') { const fl = t.files[0]; if (!fl) return; const r = new FileReader(); r.onload = () => { let o; try { o = JSON.parse(r.result); } catch (er) { alert('Yedek dosyası açılamadı: dosya bozuk ya da yedek dosyası değil.'); return; } if (!o || !Array.isArray(o.isyerleri)) { alert('Bu dosya bu programın yedek dosyası değil (işyeri listesi bulunamadı).'); return; } if (!confirm('Mevcut veriler yedekteki verilerle değiştirilsin mi? (Yedekte ' + o.isyerleri.length + ' işyeri var.)')) return; try { DB = Object.assign(yeniDB(), o); normalizeDB(); const yl = Array.from(new Set(DB.isyerleri.map(w => String(w.yil)))); if (yl.length && yl.indexOf(String(DB.yilFiltre)) < 0) DB.yilFiltre = 'tum'; DB.ekran = 'liste'; DB.acik = null; sec(); listeMsg = 'Yedek yüklendi: ' + DB.isyerleri.length + ' işyeri.'; kaydetSimdi(); ciz(); } catch (er) { alert('Yedek yüklenirken hata: ' + er.message); } }; r.readAsText(fl); t.value = ''; }
 });
 function dosyaIndir(ad, icerik) { const b = new Blob([icerik], { type: 'application/json' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = ad; a.click(); }
 document.addEventListener('click', async e => {
@@ -35082,7 +35184,9 @@ document.addEventListener('click', async e => {
   else if (a === 'gSil') S.gorevler.splice(i, 1);
   else if (a === 'evrakSifirla') { if (!confirm('Liste örnek bildirimdeki haline döndürülsün mü?')) return; S.evrak.kalemler = EVRAK_VARSAYILAN; }
   else if (a === 'birlestir') { const sel = $('#birlesSec'); const o = sel && DB.isyerleri.find(x => x.id === sel.value); if (!o) return; if (!confirm('“' + o.ad + '” görevi bu dosyaya birleştirilsin ve listeden kaldırılsın mı?')) return; S.gorevler = S.gorevler.filter(g => g.sgk || g.adres || g.isveren).concat(o.gorevler); (o.rapor.ifadeler || []).forEach(x => S.rapor.ifadeler.push(x)); DB.isyerleri = DB.isyerleri.filter(x => x.id !== o.id); senkron(S); }
-  else if (a === 'yedekAl') { dosyaIndir('teftis-yedek-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(DB)); return; }
+  else if (a === 'mufEkle') { S.gorev.mufettisler.push({ ad: '', sicil: '', bildirimNo: '', evrakNo: '' }); }
+  else if (a === 'mufSil') { const i = +t.dataset.i; if (i >= 2 && confirm('Müfettiş ' + (i + 1) + ' kaldırılsın mı?')) { S.gorev.mufettisler.splice(i, 1); (S.gorevler || []).forEach(g => { for (let k = i + 1; k < 12; k++) { if (!(('m' + k + 'ad') in g) && !(('m' + (k + 1) + 'ad') in g)) break; g['m' + k + 'ad'] = g['m' + (k + 1) + 'ad'] || ''; g['m' + k + 'sicil'] = g['m' + (k + 1) + 'sicil'] || ''; } }); } }
+  else if (a === 'yedekAl') { DB.sonYedek = new Date().toISOString(); dosyaIndir('teftis-yedek-' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify(DB)); kaydetSimdi(); ciz(); return; }
   else if (a === 'isyeriEkle') S[t.dataset.pfx].isyerleri.push({ sgk: '', adres: '', tanim: '', sayi: '' });
   else if (a === 'isyeriSil') S[t.dataset.pfx].isyerleri.splice(i, 1);
   else if (a === 'asEkle') S.altisveren.push({ unvan: '', hizmet: '' });
@@ -35176,6 +35280,7 @@ async function docxMetin(file) {
 }
 yukle();
 if (document.readyState !== 'loading') ciz(); else document.addEventListener('DOMContentLoaded', ciz);
+idbdenYukle();
 window.__teftis = { get DB() { return DB; }, ciz: ciz, tahmin: k => sayfaTahmin(k), sonuc: () => sonucMetni(), cezaG: () => cezaGruplari(), E: () => giderilmeyenBloklar(), nok: () => noksanlik(), t1: () => tutanak1(), yazi: x => yaziTL(x) };
 })();
 </script>

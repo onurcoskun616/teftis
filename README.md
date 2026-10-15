@@ -13,10 +13,16 @@ Programlı teftiş belgelerini (evrak isteme, 1. ve 2. aşama tutanak, noksanlı
 
 ## Veriler nerede saklanır?
 
-Girilen tüm bilgiler **yalnızca kullanılan bilgisayarın tarayıcısında** (localStorage) tutulur, hiçbir sunucuya gönderilmez. Bu depoda yalnızca programın kendisi bulunur, işyeri veya kişi bilgisi bulunmaz.
+Girilen tüm bilgiler **yalnızca kullanılan bilgisayarın tarayıcısında** tutulur, hiçbir sunucuya gönderilmez. Kayıt hem tarayıcının küçük deposuna (localStorage, ~5 MB) hem de büyük veritabanına (IndexedDB) yazılır; küçük depo dolsa da kayıt devam eder. İkisine birden yazılamazsa ekranın üstünde kırmızı uyarı çıkar. Bu depoda yalnızca programın kendisi bulunur, işyeri veya kişi bilgisi bulunmaz.
 
-- Farklı bilgisayar veya tarayıcıda veriler görünmez. Taşımak için ana ekrandaki **Tüm verileri yedekle / Yedekten yükle** kullanılır.
-- Tarayıcı verilerini temizlemek kayıtları siler. Düzenli yedek alın.
+- Farklı bilgisayar veya tarayıcıda veriler görünmez. Taşımak için **Tüm verileri yedekle / Yedekten yükle** kullanılır (ana ekranda ve işyeri listesinin altında).
+- Tarayıcı verilerini temizlemek kayıtları siler. 7 günden uzun süre yedek alınmazsa program uyarır.
+
+## Görev listesi yükleme
+
+- **Excel (.xlsx)** şablonu, **CSV** (`;`, `,` veya sekme ayraçlı; UTF-8 veya Windows Türkçe) ve **eski Excel (.xls)** kabul edilir. .xls okumak için internet bağlantısı gerekir.
+- **Bakanlık görev listesi PDF'i**: SGK sicil numaraları ve "Unvan:/Adres:" satırlarından okunur. Okunamazsa nedenini söyler (taranmış belge, SGK numarası yok vb.).
+- Müfettiş sayısı sınırsızdır; Excel'de "Müfettiş 3 …" sütunu isteğe bağlıdır.
 
 ## Çevrimdışı kullanım
 

@@ -1,5 +1,16 @@
 # Değişiklik geçmişi
 
+## v8.1 — 15.10.2026
+Veri güvenliği ve kullanım kolaylığı:
+
+1. **Kayıt artık sessizce kaybolmuyor.** Veriler localStorage'a ek olarak IndexedDB'ye de yazılıyor (çok daha büyük alan). İkisine de yazılamazsa ekranın üstünde kırmızı "Veriler kaydedilemiyor" uyarısı ve yedekle düğmesi çıkıyor. Sayfa kapatılırken bekleyen kayıt hemen yazılıyor.
+2. **Yedekten yükleme düzeltildi.** Eski sürümden alınan yedekler artık programı bozmuyor (eksik alanlar tamamlanıyor). Yanlış dosya seçilirse açık uyarı veriyor; yüklemeden önce yedekteki işyeri sayısını gösteriyor.
+3. **Yedek hatırlatma.** Son yedek tarihi tutuluyor; 7 günü geçince ya da hiç alınmamışsa ana ekranda ve işyeri listesinde uyarı çıkıyor. Kayıtlı veri boyutu gösteriliyor. Yedek düğmeleri işyeri listesinin altına da eklendi.
+4. **PDF görev listesi daha esnek.** SGK numarası noktalı/boşluklu yazılmış olsa da tanınıyor; "Unvan/Adres" sütunu sayfada farklı konumdaysa kendiliğinden bulunuyor. Okunamazsa nedenini söylüyor (taranmış belge, SGK numarası yok). Unvan veya adresi okunamayan satırlar için uyarı veriyor.
+5. **Dar ekranda menü.** Telefon ve tablette üst menü artık gizlenmiyor.
+6. **Müfettiş sayısı sınırsız.** "+ Müfettiş ekle" / "kaldır" düğmeleri; imza tabloları ve sayılar buna göre oluşuyor. Excel şablonuna isteğe bağlı "Müfettiş 3" sütunları eklendi; PDF'ten 3. müfettiş de okunuyor.
+7. **CSV ve .xls yükleme.** CSV (`;` `,` sekme; UTF-8 veya Windows Türkçe) doğrudan okunuyor. Eski .xls dosyaları internet varken okunuyor, yoksa ne yapılacağını söylüyor. Bozuk .xlsx için açıklayıcı mesaj.
+
 ## v8.0 — 15.10.2026
 Yeni tespit maddeleri (katalog 64 → 71 madde, 3 yeni sekme):
 
