@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yunus Akyol Otomasyon Sistemi</title>
+<title>Teftiş Otomasyon Sistemi</title>
 <style>
 :root,[data-tema=acik]{--bg:#f3f5f9;--surface:#fff;--surface2:#f7f9fc;--ink:#1a2233;--mut:#667189;--line:#e2e7f0;--line2:#cdd5e3;--acc:#1d4e89;--acch:#17406f;--accsoft:#e9f1fb;--ok:#177245;--okbg:#e6f5ed;--bad:#b42318;--badbg:#fdecea;--warn:#8a5a00;--warnbg:#fff3d1;--top1:#0f2a4d;--top2:#1d4e89;--sh:0 1px 2px rgba(16,32,60,.06),0 6px 18px rgba(16,32,60,.05);--inp:#fff;--ro:#f1f4f9;--hl:#fff176;--on:#fff}
 [data-tema=lacivert]{--bg:#e8ecf3;--surface:#fff;--surface2:#f4f6fb;--ink:#14203a;--mut:#5d6a85;--line:#d9e0ec;--line2:#bcc7da;--acc:#0b2a55;--acch:#143b72;--accsoft:#e1e8f4;--ok:#17653d;--okbg:#e3f3ea;--bad:#a82418;--badbg:#fbe9e7;--warn:#7a5200;--warnbg:#fff1c9;--top1:#061834;--top2:#0b2a55;--sh:0 1px 2px rgba(6,24,52,.08),0 8px 22px rgba(6,24,52,.07);--inp:#fff;--ro:#eef1f7;--hl:#ffe98a;--on:#fff}
@@ -80,7 +80,7 @@ footer{max-width:1240px;margin:0 auto;padding:6px 24px 30px;color:var(--mut);fon
 .rail-i.ok:not(.on){background:transparent;color:var(--ink)}.rail-i.ok:not(.on):hover{background:var(--surface2)}
 button.dng{color:#b42318;border-color:#e4a7a1}button.dng:hover{background:#fdecea}
 </style></head><body>
-<header id="top"><img id="brandLogo" alt=""><div class="brand"><b>Yunus Akyol Otomasyon Sistemi</b><small>Rehberlik ve Teftiş</small></div><nav class="topnav"><button data-act="git" data-e="home">Ana ekran</button><button data-act="git" data-e="liste">İşyerleri</button><button data-act="git" data-e="ayar">Belge ayarları</button></nav><label class="tema"><span>Tema</span><select id="temaSec"><option value="acik">Açık</option><option value="lacivert">Lacivert</option><option value="koyu">Koyu</option></select></label></header>
+<header id="top"><img id="brandLogo" alt=""><div class="brand"><b id="brandAd">Teftiş Otomasyon Sistemi</b><small id="brandAlt">Rehberlik ve Teftiş</small></div><nav class="topnav"><button data-act="git" data-e="home">Ana ekran</button><button data-act="git" data-e="liste">İşyerleri</button><button data-act="git" data-e="ayar">Belge ayarları</button></nav><label class="tema"><span>Tema</span><select id="temaSec"><option value="acik">Açık</option><option value="lacivert">Lacivert</option><option value="koyu">Koyu</option></select></label></header>
 <main id="icerik"></main>
 <footer>Bilgiler yalnızca bu bilgisayarda saklanır; hiçbir yere gönderilmez. Ana ekrandaki “Tüm verileri yedekle” ile düzenli yedek alın.</footer>
 <script>/*!
@@ -33420,7 +33420,7 @@ const KEY = 'teftis_prog_v2', KEY1 = 'teftis_prog_v1';
 const BUGUN = new Date();
 
 /* ───────────── veri ───────────── */
-function yeniDB() { return { v: 2, ekran: 'home', acik: null, yilFiltre: String(BUGUN.getFullYear()), isyerleri: [], katalogOv: {}, katalogEk: [], katalogGizli: [], katalogSilinen: [], yilAyar: {}, katSecili: null, ayar: { logo: LOGO_VARSAYILAN, logoOran: 1, logoGenislik: '2,5', tema: 'acik', nokSira: '21', baslik: ['T.C.', 'ÇALIŞMA VE SOSYAL GÜVENLİK BAKANLIĞI', 'Rehberlik ve Teftiş Başkanlığı'] } }; }
+function yeniDB() { return { v: 2, ekran: 'home', acik: null, yilFiltre: String(BUGUN.getFullYear()), isyerleri: [], katalogOv: {}, katalogEk: [], katalogGizli: [], katalogSilinen: [], yilAyar: {}, katSecili: null, ayar: { logo: LOGO_VARSAYILAN, logoOran: 1, logoGenislik: '2,5', tema: 'acik', nokSira: '21', baslik: ['T.C.', 'ÇALIŞMA VE SOSYAL GÜVENLİK BAKANLIĞI', 'Rehberlik ve Teftiş Başkanlığı'], programAdi: 'Teftiş Otomasyon Sistemi', altBaslik: 'Rehberlik ve Teftiş', varKurum: '[Görevlendiren Grup Başkanlığının]', varProgram: '[Programlı teftişin adı]' } }; }
 function yeniIsyeri(ad, yil) {
   return {
     id: 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), ad: ad, yil: String(yil), tamamlandi: false, tamamlandiTarihi: '', tab: 'gorev',
@@ -33430,8 +33430,8 @@ function yeniIsyeri(ad, yil) {
     evrak: { sayi: '', tarih: '', davetTarih: '', saat: '10.30', davetAdresi: 'İşyeri', kalemler: EVRAK_VARSAYILAN },
     kunye: { kisa: ad, sicilNo: '-', unvanlar: '', isveren: '', vekil: '', vekaletname: '', tel: '', sgk: '', adresler: '', tebligat: '' },
     gorev: {
-      kurum: 'İzmir Rehberlik ve Teftiş Grup Başkanlığının', tarih: '', sayi: '',
-      program: 'Motorlu Kara Taşıtlarının Bayi ve Servis İşyerlerinde Çalışma Koşullarının İyileştirilmesi Programlı Teftişi',
+      kurum: (DB && DB.ayar && DB.ayar.varKurum) || '[Görevlendiren Grup Başkanlığının]', tarih: '', sayi: '',
+      program: (DB && DB.ayar && DB.ayar.varProgram) || '[Programlı teftişin adı]',
       mufettisler: [{ ad: '', sicil: '', bildirimNo: '', evrakNo: '' }, { ad: '', sicil: '', bildirimNo: '', evrakNo: '' }],
       tarihler1: '', donem: '', tarih1: '', sayfa1: '', bildirimSayi: '', gun: '31', kontrolTarihi: '', kontrolSaat: '10.00', gunEl: '',
       tarihler2: '', tarih2: '', sayfa2: '', raporTarihNo: '', otomasyon: '', teftisBasBit: '',
@@ -34150,7 +34150,7 @@ function sekmeTakip() {
 }
 function sekmeKunye() {
   return '<h2>Künye</h2><div class="grid">' + f('İşyeri kısa adı', 'kunye.kisa') + f('Sicil No', 'kunye.sicilNo') + f('İşyerinin unvanı (her işyeri ayrı satır)', 'kunye.unvanlar', { area: 1, cls: 'w2' }) + f('İşveren unvanı', 'kunye.isveren', { cls: 'w2' }) + f('İşveren vekili', 'kunye.vekil') + f('Vekaletname', 'kunye.vekaletname', { cls: 'w2' }) + f('Telefon/Faks', 'kunye.tel') + f('SGK sicil numaraları (her satıra bir tane)', 'kunye.sgk', { area: 1, cls: 'w2' }) + f('İşyeri adresleri (her satıra bir tane)', 'kunye.adresler', { area: 1, cls: 'w2' }) + f('Tebligat adresi', 'kunye.tebligat', { area: 1, rows: 2, cls: 'w2' }) +
-    '</div><h2>Görev</h2><div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + f('Görev yazısı tarihi', 'gorev.tarih') + f('Görev yazısı sayısı', 'gorev.sayi') + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Yunus AKYOL” biçimine otomatik getirilir.</p><div class="grid">' +
+    '</div><h2>Görev</h2><div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + f('Görev yazısı tarihi', 'gorev.tarih') + f('Görev yazısı sayısı', 'gorev.sayi') + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Ad SOYAD” biçimine (ör. “Ahmet YILMAZ”) otomatik getirilir.</p><div class="grid">' +
     S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' })).join('') +
     '</div><h3>1. aşama</h3><div class="grid">' + f('İnceleme tarihleri', 'gorev.tarihler1', { ph: 'gg, gg, gg.aa.yyyy ve gg.aa.yyyy' }) + f('Belge inceleme dönemi (boş bırakırsanız otomatik: ' + (donem1()) + ')', 'gorev.donem') + f('Tutanak tarihi', 'gorev.tarih1', { ph: 'gg/aa/yyyy' }) + f('Tutanak sayfa sayısı (boşsa sarı boşluk kalır)', 'gorev.sayfa1') +
     '</div><h3>Noksanlık bildirimi</h3><div class="grid">' + f('Bildirim sayısı', 'gorev.bildirimSayi', { ph: 'sayı/sicil-sayı/sicil' }) + f('Bildirim tarihi (1. aşama tutanak tarihi)', 'gorev.tarih1', { ph: 'gg/aa/yyyy' }) + f('Kontrol tarihi', 'gorev.kontrolTarihi', { ph: 'gg.aa.yyyy' }) + f('Kontrol saati', 'gorev.kontrolSaat') + '<label class="f"><span>Verilen süre (gün) — tarihlerden otomatik</span><input id="gunOto" readonly value="' + esc(gunHesap()) + '" placeholder="Tarihleri girin"></label>' + f('Süreyi elle yazmak isterseniz (isteğe bağlı)', 'gorev.gunEl') +
@@ -34611,7 +34611,7 @@ function adimGorev() {
     '<div class="bar2"><button class="gh" data-act="gEkle">+ Boş görev satırı ekle</button></div>' +
     '<div class="card ilis"><b>İlişkili görev ekle</b><p class="not">Listedeki başka bir işyeri görevini bu dosyaya birleştirir (o kayıt listeden kalkar).</p>' +
     (baskaDosya.length ? '<div class="bar2"><select id="birlesSec">' + baskaDosya.map(w => '<option value="' + w.id + '">' + esc(w.ad) + ' — ' + esc((w.gorevler[0] && w.gorevler[0].sgk) || '') + '</option>').join('') + '</select><button data-act="birlestir">Bu dosyaya birleştir</button></div>' : '<p class="not">Birleştirilecek başka görev yok.</p>') + '</div>');
-  h += bolum('Görevlendirme', '<div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + '<div class="f"><span>Görev yazısı tarih / sayı (görevlerden otomatik)</span><input readonly value="' + esc(S.gorev.tarih + ' — ' + S.gorev.sayi) + '"></div>' + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Yunus AKYOL” biçimine otomatik getirilir.</p><div class="grid">' +
+  h += bolum('Görevlendirme', '<div class="grid">' + f('Görevlendiren makam (tamlama ile)', 'gorev.kurum', { cls: 'w2' }) + '<div class="f"><span>Görev yazısı tarih / sayı (görevlerden otomatik)</span><input readonly value="' + esc(S.gorev.tarih + ' — ' + S.gorev.sayi) + '"></div>' + f('Program adı', 'gorev.program', { area: 1, rows: 2, cls: 'w3' }) + '</div><h3>Müfettişler</h3><p class="not">Excel’den gelen müfettiş bilgileri buraya otomatik yazılır. Ad soyad, belgelerde “Ad SOYAD” biçimine (ör. “Ahmet YILMAZ”) otomatik getirilir.</p><div class="grid">' +
     S.gorev.mufettisler.map((m, i) => f('Ad Soyad ' + (i + 1), 'gorev.mufettisler.' + i + '.ad') + f('Sicil no (bildirim sayısında son rakamlar kullanılır)', 'gorev.mufettisler.' + i + '.sicil', { ph: '(bölge)-sicil' })).join('') + '</div>');
   const K = S.kunye;
   h += bolum('İşveren ve işveren vekili', '<p class="not">İşveren unvanı ve vekil bilgileri yalnızca burada girilir. 1. ve 2. aşama tutanak, noksanlık bildirimi, evrak isteme ve rapor kapağı bu bilgilerden otomatik oluşur. SGK sicil numarası, adres ve işyeri unvanı görev kartlarından gelir.</p><div class="grid">' + f('İşveren unvanı', 'kunye.isveren', { cls: 'w3' }) + f('İşveren vekili', 'kunye.vekil') + f('Vekaletname (noterlik, tarih, yevmiye no)', 'kunye.vekaletname', { cls: 'w2' }) + f('Telefon/Faks', 'kunye.tel', { ph: '(0xxx) xxx xx xx / -' }) + f('Tebligat adresi (boşsa ilk işyeri adresi)', 'kunye.tebligat', { cls: 'w2' }) + f('İşyeri sicil no', 'kunye.sicilNo', { ph: '-' }) + f('Dosya kısa adı', 'kunye.kisa') + '</div>');
@@ -34752,7 +34752,7 @@ document.addEventListener('click', e => {
 });
 function ekranHome() {
   const dev = DB.isyerleri.filter(w => !w.tamamlandi).length, bit = DB.isyerleri.filter(w => w.tamamlandi).length;
-  return '<div class="home"><div class="hero"><h1>Yunus Akyol Otomasyon Sistemi</h1><p>Teftiş belgeleri, takvim ve notlar</p></div><div class="homegrid">' +
+  return '<div class="home"><div class="hero"><h1>' + esc(DB.ayar.programAdi || 'Teftiş Otomasyon Sistemi') + '</h1><p>Teftiş belgeleri, takvim ve notlar</p></div><div class="homegrid">' +
     '<button class="big" data-act="git" data-e="liste"><span class="ic">📋</span><b>Programlı Teftiş</b><span>İşyeri listesi, evrak isteme, tutanaklar, noksanlık bildirimi ve rapor</span><em>' + dev + ' devam eden · ' + bit + ' tamamlanan</em></button>' +
     '<button class="big off" disabled><span class="ic">📨</span><b>Şikayet İncelemesi</b><span>Bu bölüm sonraki aşamada geliştirilecek</span></button>' +
     '<button class="big off" disabled><span class="ic">⚖️</span><b>Bilirkişilik</b><span>İleride kullanılacak</span></button></div>' +
@@ -34825,6 +34825,7 @@ function logoHazirla(file) {
 function ekranAyar() {
   const A = DB.ayar;
   return '<div class="bar"><button class="gh" data-act="git" data-e="liste">← İşyerleri</button><h2>Belge ayarları</h2></div><p class="not">Bu ayarlar tüm belgelerin başlığında kullanılır. Başlık (logo ve Bakanlık adı) her sayfanın üstünde tekrar eder; tutanaklar ve noksanlık bildiriminde ikinci sayfadan itibaren işyeri unvanı ve SGK sicil numarası anteti de eklenir.</p>' +
+    '<div class="card"><b>Program adı ve varsayılanlar</b><p class="not">Program adı sol üstte ve ana ekranda görünür. Görevlendiren makam ve program adı, bundan sonra eklenen işyerlerine varsayılan olarak yazılır (mevcut işyerlerinde “Görev ve künye” adımından değiştirilir). Köşeli parantezli alanlar belgede sarı işaretlenir.</p><div class="grid">' + f('Program adı', 'db.ayar.programAdi') + f('Alt başlık', 'db.ayar.altBaslik') + f('Varsayılan görevlendiren makam (tamlama ile, ör. “İstanbul Rehberlik ve Teftiş Grup Başkanlığının”)', 'db.ayar.varKurum', { cls: 'w2' }) + f('Varsayılan programlı teftiş adı', 'db.ayar.varProgram', { area: 1, rows: 2, cls: 'w2' }) + '</div></div>' +
     '<div class="card"><b>Bakanlık logosu</b><div class="logo-ek"><img src="' + A.logo + '"><div><p class="not">Örnek belgelerinizdeki logo hazır yüklüdür. Değiştirmek için PNG/JPG seçin.</p><input type="file" id="logoDosya" accept="image/png,image/jpeg"> <button class="sm" data-act="logoVar">Varsayılan logoya dön</button></div></div><div class="grid">' + f('Logo genişliği (cm)', 'db.ayar.logoGenislik') + '</div></div>' +
     '<div class="card"><b>Başlık satırları</b><p class="not">Logonun yanında ortalı ve kalın yazılır. Boş bıraktığınız satır yazılmaz.</p><div class="grid">' + f('1. satır', 'db.ayar.baslik.0', { cls: 'w2' }) + f('2. satır', 'db.ayar.baslik.1', { cls: 'w2' }) + f('3. satır', 'db.ayar.baslik.2', { cls: 'w2' }) + '</div></div>' +
     '<div class="card"><b>Noksanlık bildirimi müfettiş sırası</b><p class="not">Sayı satırındaki sicil/sayı çiftleri ve imza sütunları bu sıraya göre dizilir.</p><div class="grid">' + f('Sıra', 'db.ayar.nokSira', { sel: ['21', '12'] }) + '</div><p class="not">21 = önce 2. müfettiş, sonra 1. müfettiş · 12 = önce 1. müfettiş.</p></div>' +
@@ -34841,10 +34842,11 @@ function ekranIsyeri() {
     '<div class="shell"><nav class="rail">' + rail + '</nav><section class="panel">' + ADIM_FN[S.tab]() + nav + '</section></div>';
 }
 
+function markaYaz() { const ad = DB.ayar.programAdi || 'Teftiş Otomasyon Sistemi', ba = $('#brandAd'), bs = $('#brandAlt'); if (ba) ba.textContent = ad; if (bs) bs.textContent = DB.ayar.altBaslik || ''; document.title = ad; }
 function ciz() {
   sec();
   document.documentElement.dataset.tema = DB.ayar.tema || 'acik';
-  const bl = $('#brandLogo'); if (bl && DB.ayar.logo) bl.src = DB.ayar.logo; const ts = $('#temaSec'); if (ts) ts.value = DB.ayar.tema || 'acik';
+  const bl = $('#brandLogo'); if (bl && DB.ayar.logo) bl.src = DB.ayar.logo; markaYaz(); const ts = $('#temaSec'); if (ts) ts.value = DB.ayar.tema || 'acik';
   const root = $('#icerik');
   let h;
   if (DB.ekran === 'home') h = ekranHome();
@@ -34869,6 +34871,7 @@ document.addEventListener('input', e => {
     setp(t.dataset.p, v); kaydet(); if (/^gorevler\./.test(t.dataset.p)) senkron(S);
     if (/^rapor\.ifadeler\.\d+\.tarih$/.test(t.dataset.p)) { ifadeTarihiGuncelle(); const ft = $('[data-p="takip.ifadeTarihi"]'); if (ft) ft.value = S.takip.ifadeTarihi; }
     if (/^istat\.(sozlesme|stajE|stajK)$/.test(t.dataset.p)) tokYenile();
+    if (/^db\.ayar\.(programAdi|altBaslik)$/.test(t.dataset.p)) markaYaz();
     if (/^kunye\./.test(t.dataset.p)) { const ko = $('#kunyeOnizle'); if (ko) ko.innerHTML = kunyeBloklari().map(prevBlok).join(''); }
     if (/^gorev\.mufettisler\./.test(t.dataset.p)) ['bildirimNo', 'evrakNo'].forEach(a => { const o = $('#sayi_' + a); if (o) o.value = sayiOlustur(a, '', null, a === 'bildirimNo' && nokTers()); });
     if (/^gorev\.(kontrolTarihi|tarih1|tarihler1)$/.test(t.dataset.p)) { const go = $('#gunOto'); if (go) go.value = gunHesap(); } if (t.tagName === 'TEXTAREA') oto(t);
