@@ -1,0 +1,13 @@
+{
+  "name": "teftis-otomasyon",
+  "private": true,
+  "description": "Teftiş Otomasyon Sistemi — tek dosyalık tarayıcı programı, testleri ve önizleme araçları",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/e2e.mjs",
+    "site": "node tools/site-olustur.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.0"
+  }
+}

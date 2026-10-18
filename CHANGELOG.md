@@ -1,5 +1,14 @@
 # Değişiklik geçmişi
 
+## v8.2 — 18.10.2026
+Geliştirme altyapısı (programın kendisi değişmedi):
+
+- **Geliştirici sayfası** eklendi: müfettişler kendi Claude hesaplarıyla programı nasıl geliştireceklerini, açık önizlemeleri ve son sürümleri buradan görür.
+- **Önizleme:** her değişiklik yayına girmeden önce ayrı bir linkte denenebiliyor; önizlemede girilen bilgiler gerçek programdan ayrı saklanıyor.
+- **Otomatik testler:** 13 test her değişiklikte GitHub'da kendiliğinden çalışıyor (Excel/CSV/PDF yükleme, tüm tespitlerle 5 belgenin üretimi, yedek, depolama, telefon görünümü).
+- **Claude için çalışma rehberi (CLAUDE.md):** kişisel verinin depoya girmemesi, mevzuat metninin uydurulmaması, kullanıcı verisinin korunması gibi kurallar.
+- İstek/hata bildirim formu ve yönetici onayı (CODEOWNERS) eklendi.
+
 ## v8.1 — 15.10.2026
 Veri güvenliği ve kullanım kolaylığı:
 

@@ -1,0 +1,39 @@
+name: Testler
+
+# Her dala yapılan her gönderimde testleri çalıştırır.
+# Testler geçerse ve dal main değilse, önizleme sitesini yeniden oluşturur.
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Bağımlılıkları kur
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Testleri çalıştır
+        run: npm test
+
+  onizleme:
+    name: önizlemeyi güncelle
+    needs: test
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Site iş akışını main üzerinde tetikle
+        run: gh workflow run site.yml --ref main -R "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}

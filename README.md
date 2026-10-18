@@ -30,6 +30,10 @@ Girilen tüm bilgiler **yalnızca kullanılan bilgisayarın tarayıcısında** t
 
 ## Geliştirme
 
-- Program tek dosyadır: `index.html`. `main` dalına yapılan her değişiklik birkaç dakika içinde çevrimiçi linke yansır.
-- Değişiklik geçmişi için [CHANGELOG.md](CHANGELOG.md) ve commit geçmişine bakın.
-- Hata ve istekler için **Issues** sekmesini kullanın.
+Programı kullanan müfettişler, kendi Claude hesaplarıyla (Pro, Max veya Team) **claude.ai/code** üzerinden programı geliştirebilir. Adımlar ve açık önizlemeler: **https://onurcoskun616.github.io/teftis/gelistir/**
+
+- Claude, depodaki `CLAUDE.md` rehberine göre çalışır: değişikliği ayrı bir dalda yapar, `npm test` ile test eder, `CHANGELOG.md`'yi günceller.
+- Her dal için gerçek verilerden ayrı saklanan bir önizleme oluşur: `https://onurcoskun616.github.io/teftis/onizleme/<dal>/`
+- Değişiklik, yönetici pull request'i onaylayınca canlı sürüme geçer.
+- Testleri yerelde çalıştırmak için: `npm install && npx playwright install chromium && npm test`
+- Hata ve istekler için **Issues** sekmesi de kullanılabilir.

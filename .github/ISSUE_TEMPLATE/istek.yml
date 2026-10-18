@@ -1,0 +1,46 @@
+name: İstek veya hata bildirimi
+description: Programda değişiklik isteyin ya da bir hatayı bildirin
+title: "[İstek] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bu form herkese açıktır. **T.C. kimlik numarası, işçi/işveren adı gibi kişisel bilgileri yazmayın, gerçek belge eklemeyin.**
+  - type: dropdown
+    id: tur
+    attributes:
+      label: Tür
+      options:
+        - Yeni özellik / tespit
+        - Belgede yanlış ya da eksik metin
+        - Hata (program çalışmıyor, donuyor, yanlış hesaplıyor)
+        - Diğer
+    validations:
+      required: true
+  - type: dropdown
+    id: adim
+    attributes:
+      label: Programın hangi bölümü?
+      options:
+        - İşyeri listesi / görev listesi yükleme
+        - Görev ve künye
+        - İşçi ifadeleri
+        - Evrak isteme bildirimi
+        - 1. Aşama tutanak / tespitler
+        - Noksanlık bildirimi
+        - 2. Aşama tutanak
+        - Rapor
+        - Tespit kataloğu / ayarlar
+        - Diğer
+  - type: textarea
+    id: istek
+    attributes:
+      label: Ne istiyorsunuz ya da ne oldu?
+      description: Olması gereken metni ya da davranışı mümkün olduğunca açık yazın.
+    validations:
+      required: true
+  - type: textarea
+    id: ornek
+    attributes:
+      label: Örnek (isteğe bağlı)
+      description: Olması gereken cümle, mevzuat maddesi vb. Kişisel bilgileri silin.
