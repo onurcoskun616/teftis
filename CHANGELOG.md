@@ -1,5 +1,8 @@
 # Değişiklik geçmişi
 
+## v8.4 — 18.10.2026
+- İstekler artık **beklemeden** işleniyor: kullanıcı isteği gönderdiği ya da yorum yazdığı anda Claude çalışmaya başlıyor (saatlik bekleme kaldırıldı).
+
 ## v8.3 — 18.10.2026
 İstek sistemi (programın kendisi değişmedi):
 

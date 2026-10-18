@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        İsteğinizi yazın; Claude **en geç bir saat içinde** işleyip bu sayfanın altına yorum olarak cevap verir (önizleme linki ya da sorusu). Cevabı denedikten sonra yine buraya yorum yazarak devam edebilirsiniz.
+        İsteğinizi yazın; Claude isteği **hemen** işlemeye başlar ve genellikle birkaç dakika içinde bu sayfanın altına yorum olarak cevap verir (önizleme linki ya da sorusu). Cevabı denedikten sonra yine buraya yorum yazarak devam edebilirsiniz.
 
         ⚠️ **Bu sayfa herkese açıktır.** T.C. kimlik numarası, işçi/işveren adı, adres gibi bilgileri yazmayın. Belge ekleyecekseniz önce bu bilgileri silin ya da karartın.
   - type: dropdown

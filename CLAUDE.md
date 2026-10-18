@@ -1,6 +1,6 @@
 # Teftiş Otomasyon Sistemi — Claude için çalışma rehberi
 
-Bu depo, iş müfettişlerinin programlı teftiş belgelerini (evrak isteme, 1. ve 2. aşama tutanak, noksanlıklar ve aykırılıklar bildirimi, rapor) hazırladığı tarayıcı programıdır. Programı **kullanan müfettişler** isteklerini GitHub'da “istek” etiketli konu olarak yazar; yöneticinin hesabında saat başı çalışan görev bunları işler (aşağıda “Kullanıcı isteklerini işleme”). Yönetici doğrudan bir oturumda da istekte bulunabilir. Müfettişler yazılımcı değildir.
+Bu depo, iş müfettişlerinin programlı teftiş belgelerini (evrak isteme, 1. ve 2. aşama tutanak, noksanlıklar ve aykırılıklar bildirimi, rapor) hazırladığı tarayıcı programıdır. Programı **kullanan müfettişler** isteklerini GitHub'da “istek” etiketli konu olarak yazar; yöneticinin hesabındaki görev, istek gönderildiği anda bunları işler (aşağıda “Kullanıcı isteklerini işleme”). Yönetici doğrudan bir oturumda da istekte bulunabilir. Müfettişler yazılımcı değildir.
 
 ## Kullanıcıyla nasıl konuşulur
 
@@ -74,9 +74,9 @@ Hazır kütüphaneler değişirse `npm test` başarısız olur. Bilerek güncell
 7. Kullanıcıya **önizleme linkini** ver: `https://onurcoskun616.github.io/teftis/onizleme/<dal>/`. `<dal>`: dal adı küçük harfe çevrilip harf/rakam/`.`/`_`/`-` dışındaki karakterler `-` yapılır (ör. `claude/fazla-calisma` → `claude-fazla-calisma`). Önizleme, testler geçtikten sonra **5–10 dakika** içinde hazır olur; geliştirici sayfasındaki "Açık önizlemeler" listesinde de görünür: `https://onurcoskun616.github.io/teftis/gelistir/`.
 8. Kullanıcıya önizlemede deneyip sorun varsa aynı oturuma yazmasını, sorun yoksa yöneticiye haber vermesini söyle.
 
-## Kullanıcı isteklerini işleme (saat başı otomatik görev)
+## Kullanıcı isteklerini işleme (istek gelince otomatik başlayan görev)
 
-Müfettişler isteklerini GitHub'da **“istek” etiketli** konular (issue) olarak yazar; kendi Claude hesapları yoktur. Saat başı çalışan zamanlanmış görev bu bölümü uygular. GitHub işlemleri için `gh api` kullan (`GH_TOKEN` ortam değişkeni geçersizse `env -u GH_TOKEN gh api …`). Depo: `onurcoskun616/teftis`.
+Müfettişler isteklerini GitHub'da **“istek” etiketli** konular (issue) olarak yazar; kendi Claude hesapları yoktur. Bir istek açıldığında ya da yetkili biri yorum yazdığında `.github/workflows/istek.yml` yöneticinin Claude hesabındaki görevi anında başlatır ve konu numarasını (`istek=<no>`) iletir; görev bu bölümü o istek için uygular. Numara gelmezse bekleyen tüm istekleri tarar (en fazla 3). GitHub işlemleri için `gh api` kullan (`GH_TOKEN` ortam değişkeni geçersizse `env -u GH_TOKEN gh api …`). Depo: `onurcoskun616/teftis`.
 
 **Bot imzası:** Senin yazdığın her yorumun sonuna `<!-- claude-bot -->` ekle. Yorumlar yöneticinin hesabıyla görünür; imza, senin yorumunu insan yorumundan ayırmanın tek yoludur.
 

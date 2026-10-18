@@ -1,0 +1,59 @@
+name: İstek geldi
+
+# Bir müfettiş "istek" etiketli konu açtığında ya da böyle bir konuya yorum yazdığında,
+# yöneticinin Claude hesabındaki "gelen isteği işle" görevini ANINDA başlatır.
+# Gerekli ayar: Settings → Secrets and variables → Actions → New repository secret
+#   Ad: CLAUDE_ISTEK_TOKEN   Değer: claude.ai/code/routines → görev → API tetikleyicisi → Generate token
+on:
+  issues:
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+concurrency:
+  group: istek-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  tetikle:
+    # Yalnızca: "istek" etiketli konular, pull request olmayanlar, yöneticinin davet ettiği kişiler,
+    # Claude'un kendi yorumları hariç.
+    if: >-
+      contains(github.event.issue.labels.*.name, 'istek') &&
+      !github.event.issue.pull_request &&
+      (
+        (github.event_name == 'issues' &&
+          contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) ||
+        (github.event_name == 'issue_comment' &&
+          contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
+          !contains(github.event.comment.body, '<!-- claude-bot -->'))
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Claude görevini başlat
+        env:
+          TOKEN: ${{ secrets.CLAUDE_ISTEK_TOKEN }}
+          NO: ${{ github.event.issue.number }}
+          GOREV_URL: https://api.anthropic.com/v1/claude_code/routines/trig_01Vst3X6knxTpRNQeAUf47ov/fire
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::warning::CLAUDE_ISTEK_TOKEN tanımlı değil; istek #$NO işlenmek üzere gönderilemedi. Ayarlar → Secrets → Actions bölümünden ekleyin."
+            exit 0
+          fi
+          kod=$(curl -sS -o cevap.json -w '%{http_code}' -X POST "$GOREV_URL" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "anthropic-beta: experimental-cc-routine-2026-04-01" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "Content-Type: application/json" \
+            -d "{\"text\": \"istek=$NO\"}")
+          echo "Yanıt kodu: $kod"
+          if [ "$kod" -ge 200 ] && [ "$kod" -lt 300 ]; then
+            echo "İstek #$NO için Claude oturumu başlatıldı."
+          else
+            echo "::error::Claude görevi başlatılamadı (HTTP $kod). Belirteç geçersiz olabilir ya da kullanım/saatlik sınıra ulaşılmış olabilir."
+            sed -e 's/"[^"]*token[^"]*"//gI' cevap.json | head -c 500
+            exit 1
+          fi
