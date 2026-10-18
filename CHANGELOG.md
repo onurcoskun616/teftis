@@ -1,5 +1,13 @@
 # Değişiklik geçmişi
 
+## v8.3 — 18.10.2026
+İstek sistemi (programın kendisi değişmedi):
+
+- Müfettişler artık Claude hesabı olmadan, **istek formuyla** değişiklik isteyebiliyor; belge ve ekran görüntüsü eklenebiliyor.
+- İstekler yöneticinin Claude hesabında **saat başı** işleniyor; Claude isteğin altına önizleme linki ya da sorusunu yazıyor, kullanıcı yorumla devam ediyor.
+- Yalnızca yöneticinin davet ettiği kişilerin istekleri işleniyor.
+- Geliştirici sayfası yeni düzene göre yenilendi: “İstek yaz” düğmesi, örnekle istek açma, son isteklerin durumu.
+
 ## v8.2 — 18.10.2026
 Geliştirme altyapısı (programın kendisi değişmedi):
 

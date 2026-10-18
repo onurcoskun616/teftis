@@ -1,11 +1,14 @@
 name: İstek veya hata bildirimi
-description: Programda değişiklik isteyin ya da bir hatayı bildirin
+description: Programda değişiklik isteyin ya da bir hatayı bildirin — Claude işleyip size önizleme linki yazar
 title: "[İstek] "
+labels: ["istek"]
 body:
   - type: markdown
     attributes:
       value: |
-        Bu form herkese açıktır. **T.C. kimlik numarası, işçi/işveren adı gibi kişisel bilgileri yazmayın, gerçek belge eklemeyin.**
+        İsteğinizi yazın; Claude **en geç bir saat içinde** işleyip bu sayfanın altına yorum olarak cevap verir (önizleme linki ya da sorusu). Cevabı denedikten sonra yine buraya yorum yazarak devam edebilirsiniz.
+
+        ⚠️ **Bu sayfa herkese açıktır.** T.C. kimlik numarası, işçi/işveren adı, adres gibi bilgileri yazmayın. Belge ekleyecekseniz önce bu bilgileri silin ya da karartın.
   - type: dropdown
     id: tur
     attributes:
@@ -36,11 +39,11 @@ body:
     id: istek
     attributes:
       label: Ne istiyorsunuz ya da ne oldu?
-      description: Olması gereken metni ya da davranışı mümkün olduğunca açık yazın.
+      description: Neyi, nerede istediğinizi yazın (hangi adım, hangi bölüm, hangi cümle). Mümkünse olması gereken metni de yazın.
     validations:
       required: true
   - type: textarea
     id: ornek
     attributes:
-      label: Örnek (isteğe bağlı)
-      description: Olması gereken cümle, mevzuat maddesi vb. Kişisel bilgileri silin.
+      label: Örnek metin veya belge (isteğe bağlı)
+      description: Olması gereken cümle, mevzuat maddesi vb. Belge, PDF, Excel ya da ekran görüntüsünü bu kutuya sürükleyip bırakarak ekleyebilirsiniz. Kişisel bilgileri önce silin.

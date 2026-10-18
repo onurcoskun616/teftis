@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Geliştirici Sayfası — Teftiş Otomasyon Sistemi</title>
 <style>
-:root{--bg:#f3f5f9;--surface:#fff;--surface2:#f7f9fc;--ink:#1a2233;--mut:#5f6b83;--line:#e2e7f0;--acc:#1d4e89;--acch:#17406f;--accsoft:#e9f1fb;--ok:#177245;--okbg:#e6f5ed;--warn:#7a5000;--warnbg:#fff3d1;--bad:#b42318;--top1:#0f2a4d;--top2:#1d4e89;--sh:0 1px 2px rgba(16,32,60,.06),0 6px 18px rgba(16,32,60,.05)}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1420;--surface:#152033;--surface2:#192740;--ink:#e6ebf5;--mut:#9aa7c0;--line:#25324a;--acc:#5a9bec;--acch:#7ab0f2;--accsoft:#1a2c49;--ok:#52d092;--okbg:#12362b;--warn:#f2c14e;--warnbg:#3a3114;--bad:#ff8f84;--top1:#080e19;--top2:#14213a;--sh:0 1px 2px rgba(0,0,0,.45),0 8px 22px rgba(0,0,0,.25)}}
+:root{--bg:#f3f5f9;--surface:#fff;--surface2:#f7f9fc;--ink:#1a2233;--mut:#5f6b83;--line:#e2e7f0;--acc:#1d4e89;--acch:#17406f;--accsoft:#e9f1fb;--ok:#177245;--okbg:#e6f5ed;--warn:#7a5000;--warnbg:#fff3d1;--bad:#b42318;--badbg:#fdecea;--top1:#0f2a4d;--top2:#1d4e89;--sh:0 1px 2px rgba(16,32,60,.06),0 6px 18px rgba(16,32,60,.05)}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1420;--surface:#152033;--surface2:#192740;--ink:#e6ebf5;--mut:#9aa7c0;--line:#25324a;--acc:#5a9bec;--acch:#7ab0f2;--accsoft:#1a2c49;--ok:#52d092;--okbg:#12362b;--warn:#f2c14e;--warnbg:#3a3114;--bad:#ff8f84;--badbg:#3b1b1d;--top1:#080e19;--top2:#14213a;--sh:0 1px 2px rgba(0,0,0,.45),0 8px 22px rgba(0,0,0,.25)}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--acc)}
@@ -32,29 +32,28 @@ h3{font-size:15.5px;margin:0 0 6px}
 code,.kod{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;background:var(--accsoft);padding:1px 6px;border-radius:5px}
 section{margin-bottom:30px}
 .akis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:a}
-.adim{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative}
+.adim{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
 .adim::before{counter-increment:a;content:counter(a);display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:13px;align-items:center;justify-content:center;margin-bottom:8px}
 .adim p{margin:0;color:var(--mut);font-size:13.5px}
 .adim.siz::before{background:var(--ok)}
 .iki{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 ol.liste{margin:0;padding-left:20px}ol.liste li{margin-bottom:8px}
 .ornekler{display:grid;gap:10px}
-.ornek{display:flex;gap:12px;align-items:flex-start;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.ornek{display:flex;gap:12px;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .ornek p{margin:0;flex:1}
-.kopya{flex:none;font:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.kopya:hover{background:var(--accsoft)}
+.ornek a{flex:none;font-size:13px;padding:6px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);text-decoration:none;white-space:nowrap}
+.ornek a:hover{background:var(--accsoft)}
 .uyari{background:var(--warnbg);border:1px solid rgba(160,110,0,.35);color:var(--warn);border-radius:12px;padding:14px 16px}
-.uyari b{color:inherit}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:600}
 .etiket{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.etiket.ok{background:var(--okbg);color:var(--ok)}.etiket.bek{background:var(--warnbg);color:var(--warn)}
+.etiket.ok{background:var(--okbg);color:var(--ok)}.etiket.bek{background:var(--warnbg);color:var(--warn)}.etiket.soru{background:var(--badbg);color:var(--bad)}.etiket.yeni{background:var(--accsoft);color:var(--acc)}.etiket.bitti{background:var(--surface2);color:var(--mut);border:1px solid var(--line)}
 .surum h3{margin-top:14px}.surum ul{margin:4px 0 0;padding-left:20px}.surum li{margin-bottom:4px}
 .bos{color:var(--mut);font-style:italic}
 footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
 @media (max-width:860px){.giris,.iki{grid-template-columns:1fr}.akis{grid-template-columns:1fr 1fr}h1{font-size:24px}}
-@media (max-width:480px){.akis{grid-template-columns:1fr}.ornek{flex-direction:column}main{padding:20px 16px 48px}.bas{padding:12px 16px}}
+@media (max-width:480px){.akis{grid-template-columns:1fr}.ornek{flex-direction:column;align-items:flex-start}main{padding:20px 16px 48px}.bas{padding:12px 16px}}
 </style>
 </head>
 <body>
@@ -63,7 +62,7 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     <div><b>Geliştirici Sayfası</b><small>Teftiş Otomasyon Sistemi</small></div>
     <nav>
       <a href="../">Programı aç</a>
-      <a id="ghLink" href="https://github.com/onurcoskun616/teftis">GitHub deposu</a>
+      <a href="https://github.com/onurcoskun616/teftis/issues?q=label%3Aistek">Tüm istekler</a>
     </nav>
   </div>
 </header>
@@ -71,27 +70,27 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
 <main>
   <div class="giris">
     <div>
-      <h1>Programı kullananlar geliştirir</h1>
-      <p>Programda eksik gördüğünüz bir tespiti, yanlış çıkan bir cümleyi ya da istediğiniz yeni bir özelliği Claude’a kendi cümlelerinizle yazarsınız. Claude programı değiştirir, test eder ve size bir <b>önizleme linki</b> verir. Yönetici onayladığında değişiklik herkesin programında görünür.</p>
-      <p>Yazılım bilgisi gerekmez. Örnek tutanak, görev listesi ya da ekran görüntüsü ekleyebilirsiniz.</p>
-      <p class="not">Kullanım kendi Claude hesabınızın günlük ve haftalık kullanım hakkından düşer; ayrıca bir ücret ödenmez. Hakkınız dolarsa Claude ne zaman yenileneceğini gösterir.</p>
+      <h1>İsteğinizi yazın, Claude programa eklesin</h1>
+      <p>Eksik gördüğünüz bir tespiti, yanlış çıkan bir cümleyi ya da istediğiniz yeni bir özelliği kendi cümlelerinizle yazın; örnek tutanak, görev listesi ya da ekran görüntüsü ekleyebilirsiniz.</p>
+      <p>Claude isteği <b>en geç bir saat içinde</b> işler: programı değiştirir, test eder ve isteğinizin altına <b>önizleme linki</b> yazar. Siz deneyip yorum yazarak devam edersiniz; yönetici onaylayınca değişiklik herkesin programına geçer.</p>
+      <p class="not">Claude hesabı gerekmez; yalnızca ücretsiz bir GitHub hesabı ve yöneticinin davetini kabul etmiş olmanız yeterli.</p>
     </div>
     <div class="kart cta">
-      <h2>Geliştirme oturumu</h2>
-      <a class="btn" href="https://claude.ai/code" target="_blank" rel="noopener">Claude’da oturum başlat ↗</a>
-      <p class="not" style="margin:0">Açılan sayfada depo olarak <span class="kod">onurcoskun616/teftis</span>’i seçin ve isteğinizi yazın. İlk kez kullanıyorsanız önce aşağıdaki “Bir kerelik hazırlık” adımlarını tamamlayın.</p>
-      <a class="btn ikincil" href="https://github.com/onurcoskun616/teftis/issues/new?template=istek.yml" target="_blank" rel="noopener">Claude kullanmadan istek bırak</a>
+      <h2>Yeni istek</h2>
+      <a class="btn" href="https://github.com/onurcoskun616/teftis/issues/new?template=istek.yml" target="_blank" rel="noopener">İstek yaz ↗</a>
+      <a class="btn ikincil" href="https://github.com/onurcoskun616/teftis/issues?q=is%3Aopen+label%3Aistek" target="_blank" rel="noopener">Açık istekleri gör</a>
+      <p class="not" style="margin:0">İsteğinize cevap gelince GitHub size e-posta ile haber verir.</p>
     </div>
   </div>
 
   <section>
-    <h2>Bir değişiklik nasıl yayına girer?</h2>
+    <h2>Bir istek nasıl yayına girer?</h2>
     <div class="akis">
-      <div class="adim siz"><h3>İsteğinizi yazın</h3><p>claude.ai/code’da ne istediğinizi anlatın, gerekirse belge ekleyin.</p></div>
-      <div class="adim"><h3>Claude değiştirir</h3><p>Programı düzenler, otomatik testleri çalıştırır, değişiklik kaydını yazar.</p></div>
-      <div class="adim siz"><h3>Önizlemede deneyin</h3><p>Birkaç dakika içinde aşağıdaki listede önizleme linki çıkar. Gerçek verileriniz etkilenmez.</p></div>
-      <div class="adim"><h3>Yönetici onaylar</h3><p>Yönetici değişikliği GitHub’da inceler ve onaylar.</p></div>
-      <div class="adim"><h3>Herkes için yayında</h3><p>Onaydan birkaç dakika sonra program herkes için güncellenir.</p></div>
+      <div class="adim siz"><h3>İsteği yazın</h3><p>Formu doldurun, gerekirse belge ekleyin.</p></div>
+      <div class="adim"><h3>Claude işler</h3><p>En geç bir saat içinde programı değiştirir ve otomatik testleri çalıştırır. Gerekirse önce soru sorar.</p></div>
+      <div class="adim siz"><h3>Önizlemede deneyin</h3><p>İsteğinizin altına yazılan linkten deneyin. Gerçek verileriniz etkilenmez. Düzeltme gerekiyorsa yorum yazın.</p></div>
+      <div class="adim"><h3>Yönetici onaylar</h3><p>Yönetici değişikliği inceleyip onaylar.</p></div>
+      <div class="adim"><h3>Herkes için yayında</h3><p>Onaydan birkaç dakika sonra program herkes için güncellenir, istek kapanır.</p></div>
     </div>
   </section>
 
@@ -99,37 +98,42 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     <div class="kart">
       <h2>Bir kerelik hazırlık</h2>
       <ol class="liste">
-        <li><b>Claude hesabı:</b> Pro, Max ya da Team planı (Claude Code bu planlarda var). Ücretsiz plan yetmez.</li>
-        <li><b>GitHub hesabı:</b> <a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>’dan ücretsiz açın. Kullanıcı adınızı yöneticiye iletin; size gelen depo davetini e-postanızdan kabul edin.</li>
-        <li><b>Bağlantı:</b> <a href="https://claude.ai/code" target="_blank" rel="noopener">claude.ai/code</a>’u açın, GitHub’ı bağlamanız istendiğinde izin verin.</li>
-        <li><b>Depo:</b> Depo listesinden <span class="kod">onurcoskun616/teftis</span>’i seçin. Bundan sonra her yeni istek için yeni bir oturum başlatmanız yeterli.</li>
+        <li><a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>’dan ücretsiz bir hesap açın.</li>
+        <li>Kullanıcı adınızı yöneticiye iletin.</li>
+        <li>E-postanıza gelen depo davetini kabul edin. Yalnızca davetli kişilerin istekleri işlenir.</li>
       </ol>
     </div>
     <div class="kart">
       <h2>İyi bir istek nasıl yazılır?</h2>
       <ol class="liste">
         <li><b>Neyi, nerede</b> istediğinizi yazın: hangi adım (ör. 1. Aşama Tutanak), hangi bölüm, hangi cümle.</li>
-        <li>Mümkünse <b>olması gereken metni</b> verin ya da örnek belgeyi ekleyin.</li>
-        <li>Her oturumda <b>tek konu</b> isteyin; onaylaması ve geri alması kolay olur.</li>
-        <li>Claude soru sorarsa cevaplayın. Bittiğinde size önizleme linkini verir.</li>
+        <li>Mümkünse <b>olması gereken metni</b> verin ya da örnek belge ekleyin.</li>
+        <li>Her istekte <b>tek konu</b> olsun; ayrı konular için ayrı istek açın.</li>
+        <li>Claude soru sorarsa aynı sayfaya yorum yazarak cevaplayın.</li>
       </ol>
     </div>
   </section>
 
   <section>
     <h2>Örnek istekler</h2>
+    <p class="not" style="margin-top:-6px">“Bu örnekle istek aç” formu bu metinle doldurur; düzenleyip gönderebilirsiniz.</p>
     <div class="ornekler" id="ornekler"></div>
   </section>
 
   <section>
     <div class="uyari">
-      <b>Belgeler ve kişisel veriler.</b> Claude oturumuna eklediğiniz belgeler (görev emri, tutanak, ifade) yalnızca isteğinizi anlamak için kullanılır ve programın deposuna <b>eklenmez</b>; depo herkese açıktır. Yine de mümkünse T.C. kimlik numarası, işçi adları gibi bilgileri kapatarak ya da silerek ekleyin. Gerçek verilerle deneme yapacaksanız önizlemede “Yedekten yükle” ile kendi yedeğinizi açabilirsiniz; önizleme gerçek programınızdan ayrı saklanır.
+      <b>İstek sayfaları herkese açıktır.</b> T.C. kimlik numarası, işçi ve işveren adları, adres gibi bilgileri yazmayın. Belge ekleyecekseniz önce bu bilgileri silin ya da karartın. Eklediğiniz belgeler programın kendisine hiçbir zaman eklenmez; yalnızca isteğinizi anlamak için okunur.
     </div>
   </section>
 
   <section class="kart">
+    <h2>Son istekler</h2>
+    <div id="istekler"><p class="bos">Yükleniyor…</p></div>
+  </section>
+
+  <section class="kart">
     <h2>Açık önizlemeler</h2>
-    <p class="not" style="margin-top:-6px">Onay bekleyen değişiklikler. Önizleme linkinden deneyin, sorun görürseniz aynı Claude oturumuna yazın.</p>
+    <p class="not" style="margin-top:-6px">Onay bekleyen değişiklikler. Önizlemede girdiğiniz bilgiler gerçek programınızdan ayrı saklanır.</p>
     <div id="onizlemeler"><p class="bos">Yükleniyor…</p></div>
   </section>
 
@@ -142,77 +146,91 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
   <section class="kart">
     <h2>Yönetici için</h2>
     <ol class="liste">
-      <li><b>Onay:</b> GitHub’da <a href="https://github.com/onurcoskun616/teftis/pulls" target="_blank" rel="noopener">Pull requests</a> sekmesinde değişikliği açın; testlerin yeşil olduğunu ve önizlemeyi kontrol edip <b>Merge</b> deyin.</li>
-      <li><b>Geri alma:</b> Yayına girmiş bir değişiklikte sorun çıkarsa ilgili pull request’te <b>Revert</b> düğmesiyle geri alın ya da Claude’a “şu sürümdeki değişikliği geri al” deyin.</li>
-      <li><b>Yeni kullanıcı:</b> Depo ayarlarında <a href="https://github.com/onurcoskun616/teftis/settings/access" target="_blank" rel="noopener">Collaborators</a> bölümünden GitHub kullanıcı adıyla davet edin.</li>
+      <li><b>Kullanıcı davet etme:</b> <a href="https://github.com/onurcoskun616/teftis/settings/access" target="_blank" rel="noopener">Settings → Collaborators</a> bölümünden GitHub kullanıcı adıyla davet edin (“Triage” rolü yeterlidir).</li>
+      <li><b>Onay:</b> <a href="https://github.com/onurcoskun616/teftis/pulls" target="_blank" rel="noopener">Pull requests</a> sekmesinde değişikliği açın, testlerin yeşil olduğunu ve önizlemeyi kontrol edip <b>Merge</b> deyin. İlgili istek kendiliğinden kapanır.</li>
+      <li><b>Geri alma:</b> Sorun çıkarsa ilgili pull request’te <b>Revert</b> düğmesini kullanın.</li>
+      <li><b>Kullanım:</b> İstekler sizin Claude hesabınızda saat başı çalışan görevle işlenir ve hesabınızın kullanım hakkından düşer. Bir çalışmada en fazla 3 istek işlenir. Hakkınız dolarsa istekler bir sonraki saatlerde kaldığı yerden işlenir.</li>
     </ol>
   </section>
 </main>
-<footer>Teftiş Otomasyon Sistemi · Bilgiler kullanıcının tarayıcısında saklanır, hiçbir sunucuya gönderilmez.</footer>
+<footer>Teftiş Otomasyon Sistemi · Program bilgileri kullanıcının tarayıcısında saklanır, hiçbir sunucuya gönderilmez.</footer>
 
 <script>
 (function () {
   'use strict';
-  var REPO = 'onurcoskun616/teftis';
+  var REPO = 'onurcoskun616/teftis', API = 'https://api.github.com/repos/' + REPO;
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var slug = function (d) { return String(d).toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'dal'; };
-  var tarih = function (s) { try { var d = new Date(s); return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }) + ' ' + d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+  var tarih = function (s) { try { return new Date(s).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' + new Date(s).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+  var getJ = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
 
-  /* Örnek istekler */
+  /* Örnek istekler — form alanını doldurarak açar */
   var ornekler = [
-    'Fazla çalışma bölümüne “fazla çalışma onayının her yıl başında yenilenmemesi” diye yeni bir tespit ekle. Ekteki örnek tutanaktaki ifadeyi kullan.',
-    'Noksanlıklar ve aykırılıklar bildiriminde verilen süre varsayılan olarak 30 gün olsun.',
-    'Ekteki görev listesi PDF’i programda okunmuyor, “satır bulunamadı” diyor. Programın bu düzendeki PDF’leri okumasını sağla.',
-    'Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor; tek satırda kalsın.',
-    'İşyeri listesinde her işyerinin yanında işveren vekilinin telefonunu da göster.',
-    'Ücret bölümündeki “asgari ücretten düşük ücret” tespitinin yasal dayanak metnini güncel Asgari Ücret Yönetmeliğine göre kontrol et.'
+    ['Yeni özellik / tespit', '1. Aşama tutanak / tespitler', 'Fazla çalışma bölümüne “fazla çalışma onayının her yıl başında yenilenmemesi” diye yeni bir tespit ekle.'],
+    ['Diğer', 'Noksanlık bildirimi', 'Noksanlıklar ve aykırılıklar bildiriminde verilen süre varsayılan olarak 30 gün olsun.'],
+    ['Hata (program çalışmıyor, donuyor, yanlış hesaplıyor)', 'İşyeri listesi / görev listesi yükleme', 'Eklediğim görev listesi PDF’i programda okunmuyor, “satır bulunamadı” diyor. Bu düzendeki PDF’ler de okunabilsin.'],
+    ['Belgede yanlış ya da eksik metin', 'Rapor', 'Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor; tek satırda kalsın.'],
+    ['Yeni özellik / tespit', 'İşyeri listesi / görev listesi yükleme', 'İşyeri listesinde her işyerinin yanında işveren vekilinin telefonunu da göster.']
   ];
-  document.getElementById('ornekler').innerHTML = ornekler.map(function (o, i) { return '<div class="ornek"><p>' + esc(o) + '</p><button class="kopya" data-i="' + i + '">Kopyala</button></div>'; }).join('');
-  document.getElementById('ornekler').addEventListener('click', function (e) {
-    var b = e.target.closest('.kopya'); if (!b) return;
-    var t = ornekler[+b.dataset.i];
-    var bitti = function () { b.textContent = 'Kopyalandı'; setTimeout(function () { b.textContent = 'Kopyala'; }, 1500); };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(bitti, function () {}); else { var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); bitti(); } catch (x) {} ta.remove(); }
-  });
+  var formLink = function (o) { return 'https://github.com/' + REPO + '/issues/new?template=istek.yml&tur=' + encodeURIComponent(o[0]) + '&adim=' + encodeURIComponent(o[1]) + '&istek=' + encodeURIComponent(o[2]) + '&title=' + encodeURIComponent('[İstek] ' + o[2].slice(0, 60)); };
+  document.getElementById('ornekler').innerHTML = ornekler.map(function (o) { return '<div class="ornek"><p>' + esc(o[2]) + '</p><a href="' + esc(formLink(o)) + '" target="_blank" rel="noopener">Bu örnekle istek aç ↗</a></div>'; }).join('');
 
-  /* Açık önizlemeler: site üretilirken yazılan liste + GitHub'daki açık pull request'ler */
-  var hedef = document.getElementById('onizlemeler');
+  /* Veriler */
   Promise.all([
-    fetch('../onizleme/liste.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-    fetch('https://api.github.com/repos/' + REPO + '/pulls?state=open&per_page=50').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-  ]).then(function (sonuc) {
-    var liste = (sonuc[0] && sonuc[0].onizlemeler) || [], prler = Array.isArray(sonuc[1]) ? sonuc[1] : [];
-    var satirlar = {};
-    liste.forEach(function (o) { satirlar[o.dal] = { dal: o.dal, konu: o.konu, tarih: o.tarih, yazar: o.yazar, klasor: o.klasor, hazir: true }; });
-    prler.forEach(function (p) { var d = p.head && p.head.ref; if (!d) return; var s = satirlar[d] || (satirlar[d] = { dal: d, klasor: slug(d), hazir: false, tarih: p.updated_at }); s.pr = p; s.konu = p.title || s.konu; s.yazar = (p.user && p.user.login) || s.yazar; });
-    var l = Object.keys(satirlar).map(function (k) { return satirlar[k]; }).sort(function (a, b) { return String(b.tarih).localeCompare(String(a.tarih)); });
-    if (!l.length) { hedef.innerHTML = '<p class="bos">Şu anda onay bekleyen bir değişiklik yok.</p>'; return; }
-    hedef.innerHTML = '<div style="overflow-x:auto"><table><tr><th>Değişiklik</th><th>Durum</th><th>Bağlantılar</th></tr>' + l.map(function (s) {
-      return '<tr><td><b>' + esc(s.konu || s.dal) + '</b><div class="not">' + esc(s.yazar || '') + (s.tarih ? ' · ' + esc(tarih(s.tarih)) : '') + '</div></td>' +
-        '<td>' + (s.hazir ? '<span class="etiket ok">Önizleme hazır</span>' : '<span class="etiket bek">Test / hazırlanıyor</span>') + '</td>' +
-        '<td>' + (s.hazir ? '<a href="../onizleme/' + encodeURIComponent(s.klasor) + '/" target="_blank" rel="noopener">Önizlemeyi aç</a>' : '') +
-        (s.pr ? (s.hazir ? ' · ' : '') + '<a href="' + esc(s.pr.html_url) + '" target="_blank" rel="noopener">GitHub’da incele</a>' : '') + '</td></tr>';
+    getJ(API + '/issues?labels=istek&state=all&per_page=30&sort=updated'),
+    getJ(API + '/pulls?state=open&per_page=50'),
+    getJ('../onizleme/liste.json')
+  ]).then(function (r) {
+    var istekler = (Array.isArray(r[0]) ? r[0] : []).filter(function (i) { return !i.pull_request; });
+    var prler = Array.isArray(r[1]) ? r[1] : [];
+    var onz = (r[2] && r[2].onizlemeler) || [];
+    var onzVar = {}; onz.forEach(function (o) { onzVar[o.dal] = o; });
+
+    /* Son istekler */
+    var h = document.getElementById('istekler');
+    if (!r[0]) h.innerHTML = '<p class="bos">İstek listesi şu an alınamadı. <a href="https://github.com/' + REPO + '/issues?q=label%3Aistek" target="_blank" rel="noopener">GitHub’da görün</a>.</p>';
+    else if (!istekler.length) h.innerHTML = '<p class="bos">Henüz istek yok. İlk isteği siz yazın.</p>';
+    else h.innerHTML = '<div style="overflow-x:auto"><table><tr><th>İstek</th><th>Durum</th><th></th></tr>' + istekler.map(function (i) {
+      var et = (i.labels || []).map(function (l) { return l.name; }), d;
+      if (i.state === 'closed') d = '<span class="etiket bitti">Tamamlandı</span>';
+      else if (et.indexOf('soru-var') >= 0) d = '<span class="etiket soru">Sizden cevap bekliyor</span>';
+      else if (et.indexOf('claude-isliyor') >= 0) d = '<span class="etiket bek">Claude çalışıyor</span>';
+      else if (et.indexOf('onizleme-hazir') >= 0) d = '<span class="etiket ok">Önizleme hazır</span>';
+      else d = '<span class="etiket yeni">Sırada</span>';
+      var dal = 'istek-' + i.number, onLink = onzVar[dal] && i.state !== 'closed' ? ' · <a href="../onizleme/' + slug(dal) + '/" target="_blank" rel="noopener">Önizleme</a>' : '';
+      return '<tr><td><b>#' + i.number + ' ' + esc(String(i.title || '').replace(/^\[İstek\]\s*/, '')) + '</b><div class="not">' + esc(i.user && i.user.login) + ' · ' + esc(tarih(i.updated_at)) + '</div></td><td>' + d + '</td><td><a href="' + esc(i.html_url) + '" target="_blank" rel="noopener">Aç</a>' + onLink + '</td></tr>';
     }).join('') + '</table></div>';
+
+    /* Açık önizlemeler */
+    var s = {};
+    onz.forEach(function (o) { s[o.dal] = { dal: o.dal, konu: o.konu, tarih: o.tarih, klasor: o.klasor, hazir: true }; });
+    prler.forEach(function (p) { var d = p.head && p.head.ref; if (!d) return; var x = s[d] || (s[d] = { dal: d, klasor: slug(d), hazir: false, tarih: p.updated_at }); x.pr = p; x.konu = p.title || x.konu; });
+    var l = Object.keys(s).map(function (k) { return s[k]; }).sort(function (a, b) { return String(b.tarih).localeCompare(String(a.tarih)); });
+    var o = document.getElementById('onizlemeler');
+    o.innerHTML = !l.length ? '<p class="bos">Şu anda onay bekleyen bir değişiklik yok.</p>' :
+      '<div style="overflow-x:auto"><table><tr><th>Değişiklik</th><th>Durum</th><th></th></tr>' + l.map(function (x) {
+        return '<tr><td><b>' + esc(x.konu || x.dal) + '</b><div class="not">' + esc(tarih(x.tarih)) + '</div></td><td>' + (x.hazir ? '<span class="etiket ok">Önizleme hazır</span>' : '<span class="etiket bek">Test / hazırlanıyor</span>') + '</td><td>' +
+          (x.hazir ? '<a href="../onizleme/' + encodeURIComponent(x.klasor) + '/" target="_blank" rel="noopener">Önizlemeyi aç</a>' : '') + (x.pr ? (x.hazir ? ' · ' : '') + '<a href="' + esc(x.pr.html_url) + '" target="_blank" rel="noopener">İncele</a>' : '') + '</td></tr>';
+      }).join('') + '</table></div>';
   });
 
-  /* Son sürümler: CHANGELOG.md'nin ilk üç sürümü */
+  /* Son sürümler */
   var md = function (t) {
-    var out = [], liAcik = false;
+    var out = [], ac = false;
     t.split('\n').forEach(function (s) {
-      var satir = esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
-      if (/^\s*[-*] /.test(s)) { if (!liAcik) { out.push('<ul>'); liAcik = true; } out.push('<li>' + satir.replace(/^\s*[-*] /, '') + '</li>'); return; }
-      if (/^\s*\d+\. /.test(s)) { if (!liAcik) { out.push('<ul>'); liAcik = true; } out.push('<li>' + satir.replace(/^\s*\d+\.\s*/, '') + '</li>'); return; }
-      if (liAcik && /^\s{2,}\S/.test(s)) { out[out.length - 1] = out[out.length - 1].replace(/<\/li>$/, ' ' + satir.trim() + '</li>'); return; }
-      if (liAcik) { out.push('</ul>'); liAcik = false; }
-      if (/^## /.test(s)) out.push('<h3>' + satir.replace(/^## /, '') + '</h3>');
-      else if (s.trim()) out.push('<p class="not" style="margin:4px 0">' + satir + '</p>');
+      var x = esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
+      if (/^\s*([-*]|\d+\.) /.test(s)) { if (!ac) { out.push('<ul>'); ac = true; } out.push('<li>' + x.replace(/^\s*([-*]|\d+\.)\s*/, '') + '</li>'); return; }
+      if (ac && /^\s{2,}\S/.test(s)) { out[out.length - 1] = out[out.length - 1].replace(/<\/li>$/, ' ' + x.trim() + '</li>'); return; }
+      if (ac) { out.push('</ul>'); ac = false; }
+      if (/^## /.test(s)) out.push('<h3>' + x.replace(/^## /, '') + '</h3>');
+      else if (s.trim()) out.push('<p class="not" style="margin:4px 0">' + x + '</p>');
     });
-    if (liAcik) out.push('</ul>');
+    if (ac) out.push('</ul>');
     return out.join('');
   };
   fetch('../CHANGELOG.md', { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : Promise.reject(); }).then(function (t) {
-    var parca = t.split(/\n(?=## )/).filter(function (x) { return /^## /.test(x); }).slice(0, 3);
-    document.getElementById('surumler').innerHTML = parca.length ? md(parca.join('\n')) : '<p class="bos">Kayıt yok.</p>';
+    var p = t.split(/\n(?=## )/).filter(function (x) { return /^## /.test(x); }).slice(0, 3);
+    document.getElementById('surumler').innerHTML = p.length ? md(p.join('\n')) : '<p class="bos">Kayıt yok.</p>';
   }).catch(function () { document.getElementById('surumler').innerHTML = '<p class="bos">Değişiklik geçmişi yüklenemedi.</p>'; });
 })();
 </script>
