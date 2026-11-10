@@ -1,29 +1,19 @@
-name: İstek veya hata bildirimi
-description: Programda değişiklik isteyin ya da bir hatayı bildirin — Claude işleyip size önizleme linki yazar
+name: İstek
+description: Programda değişiklik isteyin ya da bir hatayı bildirin
 title: "[İstek] "
 labels: ["istek"]
 body:
-  - type: markdown
+  - type: textarea
+    id: istek
     attributes:
-      value: |
-        İsteğinizi yazın; Claude isteği **hemen** işlemeye başlar ve genellikle birkaç dakika içinde bu sayfanın altına yorum olarak cevap verir (önizleme linki ya da sorusu). Cevabı denedikten sonra yine buraya yorum yazarak devam edebilirsiniz.
-
-        ⚠️ **Bu sayfa herkese açıktır.** T.C. kimlik numarası, işçi/işveren adı, adres gibi bilgileri yazmayın. Belge ekleyecekseniz önce bu bilgileri silin ya da karartın.
-  - type: dropdown
-    id: tur
-    attributes:
-      label: Tür
-      options:
-        - Yeni özellik / tespit
-        - Belgede yanlış ya da eksik metin
-        - Hata (program çalışmıyor, donuyor, yanlış hesaplıyor)
-        - Diğer
+      label: İsteğiniz
+      description: Neyi, nerede istediğinizi kendi cümlelerinizle yazın. Kişisel bilgi (T.C. no, işçi/işveren adı, adres) yazmayın; bu sayfa herkese açıktır.
     validations:
       required: true
   - type: dropdown
     id: adim
     attributes:
-      label: Programın hangi bölümü?
+      label: Hangi bölümle ilgili? (isteğe bağlı)
       options:
         - İşyeri listesi / görev listesi yükleme
         - Görev ve künye
@@ -36,14 +26,7 @@ body:
         - Tespit kataloğu / ayarlar
         - Diğer
   - type: textarea
-    id: istek
+    id: ek
     attributes:
-      label: Ne istiyorsunuz ya da ne oldu?
-      description: Neyi, nerede istediğinizi yazın (hangi adım, hangi bölüm, hangi cümle). Mümkünse olması gereken metni de yazın.
-    validations:
-      required: true
-  - type: textarea
-    id: ornek
-    attributes:
-      label: Örnek metin veya belge (isteğe bağlı)
-      description: Olması gereken cümle, mevzuat maddesi vb. Belge, PDF, Excel ya da ekran görüntüsünü bu kutuya sürükleyip bırakarak ekleyebilirsiniz. Kişisel bilgileri önce silin.
+      label: Belge veya ekran görüntüsü (isteğe bağlı)
+      description: Dosyayı bu kutuya sürükleyip bırakın. Önce kişisel bilgileri silin ya da karartın.
