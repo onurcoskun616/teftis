@@ -1,5 +1,9 @@
 # Değişiklik geçmişi
 
+## v8.6 — 10.11.2026
+- Değişiklikleri artık **isteği yazan müfettiş onaylıyor**: deneme linkinden kontrol edip isteğin altına “Onaylıyorum” yazınca Claude testleri son kez kontrol edip değişikliği herkes için yayına alıyor.
+- Geliştirici sayfası sadeleşti: yalnızca istek formu, akış ve ilk kullanım adımları kaldı.
+
 ## v8.5 — 10.11.2026
 - İstek yazmak kolaylaştı: geliştirici sayfasında tek bir kutuya isteği yazıp bölüm seçerek “İsteği gönder”e basmak yeterli; GitHub sayfası her şey doldurulmuş olarak açılıyor, yalnızca yeşil düğmeye basılıyor.
 - GitHub'daki istek formu sadeleşti: tek zorunlu alan (İsteğiniz), isteğe bağlı bölüm ve belge ekleme kutusu.

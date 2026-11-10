@@ -104,7 +104,8 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     <ol class="sonra">
       <li>GitHub sayfası isteğiniz <b>yazılmış olarak</b> açılır (ilk seferde GitHub hesabınızla giriş yapmanız istenir).</li>
       <li>Belge ya da ekran görüntüsü eklemek isterseniz o sayfadaki alt kutuya sürükleyin.</li>
-      <li>En alttaki yeşil <b>Create</b> düğmesine basın. Bu kadar — cevap gelince GitHub size e-posta gönderir.</li>
+      <li>En alttaki yeşil <b>Create</b> düğmesine basın. Cevap gelince GitHub size e-posta gönderir.</li>
+      <li>Cevaptaki deneme linkinden deneyin; uygunsa altına <b>Onaylıyorum</b> yazın, program herkes için güncellenir.</li>
     </ol>
   </section>
 
@@ -113,9 +114,9 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     <div class="akis">
       <div class="adim siz"><h3>İsteği yazın</h3><p>Yukarıdaki kutuya yazıp gönderin, gerekirse belge ekleyin.</p></div>
       <div class="adim"><h3>Claude işler</h3><p>Gönderdiğiniz anda başlar; programı değiştirir ve otomatik testleri çalıştırır. Gerekirse önce soru sorar.</p></div>
-      <div class="adim siz"><h3>Önizlemede deneyin</h3><p>İsteğinizin altına yazılan linkten deneyin. Gerçek verileriniz etkilenmez. Düzeltme gerekiyorsa yorum yazın.</p></div>
-      <div class="adim"><h3>Yönetici onaylar</h3><p>Yönetici değişikliği inceleyip onaylar.</p></div>
-      <div class="adim"><h3>Herkes için yayında</h3><p>Onaydan birkaç dakika sonra program herkes için güncellenir, istek kapanır.</p></div>
+      <div class="adim siz"><h3>Deneyin</h3><p>İsteğinizin altına yazılan deneme linkinden deneyin. Gerçek verileriniz etkilenmez. Düzeltme gerekiyorsa yorum yazın.</p></div>
+      <div class="adim siz"><h3>Siz onaylayın</h3><p>Uygunsa isteğinizin altına <b>Onaylıyorum</b> yazın.</p></div>
+      <div class="adim"><h3>Herkes için yayında</h3><p>Onayınızdan birkaç dakika sonra program herkes için güncellenir, istek kapanır.</p></div>
     </div>
   </section>
 
@@ -130,55 +131,14 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     </div>
   </section>
 
-  <section>
-    <h2>Örnek istekler</h2>
-    <p class="not" style="margin-top:-6px">“Bu örneği kullan” yukarıdaki kutuyu doldurur; düzenleyip gönderebilirsiniz.</p>
-    <div class="ornekler" id="ornekler"></div>
-  </section>
-
-  <section>
-    <div class="uyari">
-      <b>İstek sayfaları herkese açıktır.</b> T.C. kimlik numarası, işçi ve işveren adları, adres gibi bilgileri yazmayın. Belge ekleyecekseniz önce bu bilgileri silin ya da karartın. Eklediğiniz belgeler programın kendisine hiçbir zaman eklenmez; yalnızca isteğinizi anlamak için okunur.
-    </div>
-  </section>
-
-  <section class="kart">
-    <h2>Son istekler</h2>
-    <div id="istekler"><p class="bos">Yükleniyor…</p></div>
-  </section>
-
-  <section class="kart">
-    <h2>Açık önizlemeler</h2>
-    <p class="not" style="margin-top:-6px">Onay bekleyen değişiklikler. Önizlemede girdiğiniz bilgiler gerçek programınızdan ayrı saklanır.</p>
-    <div id="onizlemeler"><p class="bos">Yükleniyor…</p></div>
-  </section>
-
-  <section class="kart surum">
-    <h2>Son sürümler</h2>
-    <div id="surumler"><p class="bos">Yükleniyor…</p></div>
-    <p class="not" style="margin-bottom:0"><a href="https://github.com/onurcoskun616/teftis/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Tüm değişiklik geçmişi</a></p>
-  </section>
-
-  <section class="kart">
-    <h2>Yönetici için</h2>
-    <ol class="liste">
-      <li><b>Kullanıcı davet etme:</b> <a href="https://github.com/onurcoskun616/teftis/settings/access" target="_blank" rel="noopener">Settings → Collaborators</a> bölümünden GitHub kullanıcı adıyla davet edin (“Triage” rolü yeterlidir).</li>
-      <li><b>Onay:</b> <a href="https://github.com/onurcoskun616/teftis/pulls" target="_blank" rel="noopener">Pull requests</a> sekmesinde değişikliği açın, testlerin yeşil olduğunu ve önizlemeyi kontrol edip <b>Merge</b> deyin. İlgili istek kendiliğinden kapanır.</li>
-      <li><b>Geri alma:</b> Sorun çıkarsa ilgili pull request’te <b>Revert</b> düğmesini kullanın.</li>
-      <li><b>Kullanım:</b> Her istek ve her yorum, sizin Claude hesabınızdaki görevi anında başlatır; kullanım hesabınızın hakkından düşer. Hakkınız dolduğunda gelen istekler işlenemez; hak yenilendikten sonra kullanıcı isteğe kısa bir yorum (“devam”) yazarak yeniden başlatabilir.</li>
-    </ol>
-  </section>
 </main>
 <footer>Teftiş Otomasyon Sistemi · Program bilgileri kullanıcının tarayıcısında saklanır, hiçbir sunucuya gönderilmez.</footer>
 
 <script>
 (function () {
   'use strict';
-  var REPO = 'onurcoskun616/teftis', API = 'https://api.github.com/repos/' + REPO;
+  var REPO = 'onurcoskun616/teftis';
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var slug = function (d) { return String(d).toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'dal'; };
-  var tarih = function (s) { try { return new Date(s).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' + new Date(s).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
-  var getJ = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
 
   /* Basit istek formu → GitHub'da doldurulmuş istek sayfası */
   var BOLUMLER = ['İşyeri listesi / görev listesi yükleme', 'Görev ve künye', 'İşçi ifadeleri', 'Evrak isteme bildirimi', '1. Aşama tutanak / tespitler', 'Noksanlık bildirimi', '2. Aşama tutanak', 'Rapor', 'Tespit kataloğu / ayarlar', 'Diğer'];
@@ -199,75 +159,6 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     try { localStorage.removeItem('teftis_istek_taslak'); } catch (e) {}
   });
 
-  /* Örnek istekler — formu doldurur */
-  var ornekler = [
-    ['1. Aşama tutanak / tespitler', 'Fazla çalışma bölümüne “fazla çalışma onayının her yıl başında yenilenmemesi” diye yeni bir tespit ekle.'],
-    ['Noksanlık bildirimi', 'Noksanlıklar ve aykırılıklar bildiriminde verilen süre varsayılan olarak 30 gün olsun.'],
-    ['İşyeri listesi / görev listesi yükleme', 'Eklediğim görev listesi PDF’i programda okunmuyor, “satır bulunamadı” diyor. Bu düzendeki PDF’ler de okunabilsin.'],
-    ['Rapor', 'Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor; tek satırda kalsın.'],
-    ['İşyeri listesi / görev listesi yükleme', 'İşyeri listesinde her işyerinin yanında işveren vekilinin telefonunu da göster.']
-  ];
-  var ol = document.getElementById('ornekler');
-  ol.innerHTML = ornekler.map(function (o, i) { return '<div class="ornek"><p>' + esc(o[1]) + '</p><button type="button" class="ornek-btn" data-i="' + i + '">Bu örneği kullan</button></div>'; }).join('');
-  ol.addEventListener('click', function (e) { var b = e.target.closest('.ornek-btn'); if (!b) return; var o = ornekler[+b.dataset.i]; kutu.value = o[1]; hata.textContent = ''; secili = o[0]; cipCiz(); taslakYaz(); document.getElementById('istekFormu').scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { kutu.focus(); }, 400); });
-
-  /* Veriler */
-  Promise.all([
-    getJ(API + '/issues?labels=istek&state=all&per_page=30&sort=updated'),
-    getJ(API + '/pulls?state=open&per_page=50'),
-    getJ('../onizleme/liste.json')
-  ]).then(function (r) {
-    var istekler = (Array.isArray(r[0]) ? r[0] : []).filter(function (i) { return !i.pull_request; });
-    var prler = Array.isArray(r[1]) ? r[1] : [];
-    var onz = (r[2] && r[2].onizlemeler) || [];
-    var onzVar = {}; onz.forEach(function (o) { onzVar[o.dal] = o; });
-
-    /* Son istekler */
-    var h = document.getElementById('istekler');
-    if (!r[0]) h.innerHTML = '<p class="bos">İstek listesi şu an alınamadı. <a href="https://github.com/' + REPO + '/issues?q=label%3Aistek" target="_blank" rel="noopener">GitHub’da görün</a>.</p>';
-    else if (!istekler.length) h.innerHTML = '<p class="bos">Henüz istek yok. İlk isteği siz yazın.</p>';
-    else h.innerHTML = '<div style="overflow-x:auto"><table><tr><th>İstek</th><th>Durum</th><th></th></tr>' + istekler.map(function (i) {
-      var et = (i.labels || []).map(function (l) { return l.name; }), d;
-      if (i.state === 'closed') d = '<span class="etiket bitti">Tamamlandı</span>';
-      else if (et.indexOf('soru-var') >= 0) d = '<span class="etiket soru">Sizden cevap bekliyor</span>';
-      else if (et.indexOf('claude-isliyor') >= 0) d = '<span class="etiket bek">Claude çalışıyor</span>';
-      else if (et.indexOf('onizleme-hazir') >= 0) d = '<span class="etiket ok">Önizleme hazır</span>';
-      else d = '<span class="etiket yeni">Sırada</span>';
-      var dal = 'istek-' + i.number, onLink = onzVar[dal] && i.state !== 'closed' ? ' · <a href="../onizleme/' + slug(dal) + '/" target="_blank" rel="noopener">Önizleme</a>' : '';
-      return '<tr><td><b>#' + i.number + ' ' + esc(String(i.title || '').replace(/^\[İstek\]\s*/, '')) + '</b><div class="not">' + esc(i.user && i.user.login) + ' · ' + esc(tarih(i.updated_at)) + '</div></td><td>' + d + '</td><td><a href="' + esc(i.html_url) + '" target="_blank" rel="noopener">Aç</a>' + onLink + '</td></tr>';
-    }).join('') + '</table></div>';
-
-    /* Açık önizlemeler */
-    var s = {};
-    onz.forEach(function (o) { s[o.dal] = { dal: o.dal, konu: o.konu, tarih: o.tarih, klasor: o.klasor, hazir: true }; });
-    prler.forEach(function (p) { var d = p.head && p.head.ref; if (!d) return; var x = s[d] || (s[d] = { dal: d, klasor: slug(d), hazir: false, tarih: p.updated_at }); x.pr = p; x.konu = p.title || x.konu; });
-    var l = Object.keys(s).map(function (k) { return s[k]; }).sort(function (a, b) { return String(b.tarih).localeCompare(String(a.tarih)); });
-    var o = document.getElementById('onizlemeler');
-    o.innerHTML = !l.length ? '<p class="bos">Şu anda onay bekleyen bir değişiklik yok.</p>' :
-      '<div style="overflow-x:auto"><table><tr><th>Değişiklik</th><th>Durum</th><th></th></tr>' + l.map(function (x) {
-        return '<tr><td><b>' + esc(x.konu || x.dal) + '</b><div class="not">' + esc(tarih(x.tarih)) + '</div></td><td>' + (x.hazir ? '<span class="etiket ok">Önizleme hazır</span>' : '<span class="etiket bek">Test / hazırlanıyor</span>') + '</td><td>' +
-          (x.hazir ? '<a href="../onizleme/' + encodeURIComponent(x.klasor) + '/" target="_blank" rel="noopener">Önizlemeyi aç</a>' : '') + (x.pr ? (x.hazir ? ' · ' : '') + '<a href="' + esc(x.pr.html_url) + '" target="_blank" rel="noopener">İncele</a>' : '') + '</td></tr>';
-      }).join('') + '</table></div>';
-  });
-
-  /* Son sürümler */
-  var md = function (t) {
-    var out = [], ac = false;
-    t.split('\n').forEach(function (s) {
-      var x = esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
-      if (/^\s*([-*]|\d+\.) /.test(s)) { if (!ac) { out.push('<ul>'); ac = true; } out.push('<li>' + x.replace(/^\s*([-*]|\d+\.)\s*/, '') + '</li>'); return; }
-      if (ac && /^\s{2,}\S/.test(s)) { out[out.length - 1] = out[out.length - 1].replace(/<\/li>$/, ' ' + x.trim() + '</li>'); return; }
-      if (ac) { out.push('</ul>'); ac = false; }
-      if (/^## /.test(s)) out.push('<h3>' + x.replace(/^## /, '') + '</h3>');
-      else if (s.trim()) out.push('<p class="not" style="margin:4px 0">' + x + '</p>');
-    });
-    if (ac) out.push('</ul>');
-    return out.join('');
-  };
-  fetch('../CHANGELOG.md', { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : Promise.reject(); }).then(function (t) {
-    var p = t.split(/\n(?=## )/).filter(function (x) { return /^## /.test(x); }).slice(0, 3);
-    document.getElementById('surumler').innerHTML = p.length ? md(p.join('\n')) : '<p class="bos">Kayıt yok.</p>';
-  }).catch(function () { document.getElementById('surumler').innerHTML = '<p class="bos">Değişiklik geçmişi yüklenemedi.</p>'; });
 })();
 </script>
 </body>
