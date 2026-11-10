@@ -1,5 +1,10 @@
 # Değişiklik geçmişi
 
+## v8.5 — 10.11.2026
+- İstek yazmak kolaylaştı: geliştirici sayfasında tek bir kutuya isteği yazıp bölüm seçerek “İsteği gönder”e basmak yeterli; GitHub sayfası her şey doldurulmuş olarak açılıyor, yalnızca yeşil düğmeye basılıyor.
+- GitHub'daki istek formu sadeleşti: tek zorunlu alan (İsteğiniz), isteğe bağlı bölüm ve belge ekleme kutusu.
+- Örnek istekler artık kutuyu dolduruyor; yazılan istek sayfa kapansa da taslak olarak saklanıyor.
+
 ## v8.4 — 18.10.2026
 - İstekler artık **beklemeden** işleniyor: kullanıcı isteği gönderdiği ya da yorum yazdığı anda Claude çalışmaya başlıyor (saatlik bekleme kaldırıldı).
 

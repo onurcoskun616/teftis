@@ -41,8 +41,23 @@ ol.liste{margin:0;padding-left:20px}ol.liste li{margin-bottom:8px}
 .ornekler{display:grid;gap:10px}
 .ornek{display:flex;gap:12px;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .ornek p{margin:0;flex:1}
-.ornek a{flex:none;font-size:13px;padding:6px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);text-decoration:none;white-space:nowrap}
-.ornek a:hover{background:var(--accsoft)}
+.ornek-btn{flex:none;font:inherit;font-size:13px;padding:6px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--acc);cursor:pointer;white-space:nowrap}
+.ornek-btn:hover{background:var(--accsoft)}
+.baslik{margin-bottom:18px}.baslik p{color:var(--mut);font-size:16px;margin:0;max-width:720px}
+.form{margin-bottom:30px;border-top:4px solid var(--acc)}
+.fadim{display:flex;align-items:center;gap:10px;font-weight:650;font-size:16px;margin:18px 0 10px}.fadim:first-child{margin-top:0}
+.fadim .no{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-size:13px;align-items:center;justify-content:center;flex:none}
+.fadim .not{font-weight:400}
+textarea{width:100%;font:inherit;font-size:16px;line-height:1.5;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);resize:vertical;min-height:130px}
+textarea:focus{outline:2px solid var(--acc);outline-offset:1px;background:var(--surface)}
+.kucuk{margin:6px 0 0}
+.cipler{display:flex;flex-wrap:wrap;gap:8px}
+.cip{font:inherit;font-size:14px;padding:7px 12px;border-radius:20px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer}
+.cip:hover{border-color:var(--acc)}.cip.secili{background:var(--acc);border-color:var(--acc);color:#fff}
+.gonder-satir{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn.buyuk{font-size:17px;padding:14px 26px}
+.hata{color:var(--bad);font-size:14px;font-weight:600}
+ol.sonra{margin:14px 0 0;padding-left:20px;color:var(--mut);font-size:14px}ol.sonra li{margin-bottom:4px}
 .uyari{background:var(--warnbg);border:1px solid rgba(160,110,0,.35);color:var(--warn);border-radius:12px;padding:14px 16px}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -53,7 +68,7 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);
 .bos{color:var(--mut);font-style:italic}
 footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
 @media (max-width:860px){.giris,.iki{grid-template-columns:1fr}.akis{grid-template-columns:1fr 1fr}h1{font-size:24px}}
-@media (max-width:480px){.akis{grid-template-columns:1fr}.ornek{flex-direction:column;align-items:flex-start}main{padding:20px 16px 48px}.bas{padding:12px 16px}}
+@media (max-width:480px){.akis{grid-template-columns:1fr}.ornek{flex-direction:column;align-items:flex-start}.btn.buyuk{width:100%}main{padding:20px 16px 48px}.bas{padding:12px 16px}}
 </style>
 </head>
 <body>
@@ -68,25 +83,35 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
 </header>
 
 <main>
-  <div class="giris">
-    <div>
-      <h1>İsteğinizi yazın, Claude programa eklesin</h1>
-      <p>Eksik gördüğünüz bir tespiti, yanlış çıkan bir cümleyi ya da istediğiniz yeni bir özelliği kendi cümlelerinizle yazın; örnek tutanak, görev listesi ya da ekran görüntüsü ekleyebilirsiniz.</p>
-      <p>Gönderdiğiniz anda Claude çalışmaya başlar ve genellikle <b>birkaç dakika içinde</b> bitirir: programı değiştirir, test eder ve isteğinizin altına <b>önizleme linki</b> yazar. Siz deneyip yorum yazarak devam edersiniz; yönetici onaylayınca değişiklik herkesin programına geçer.</p>
-      <p class="not">Claude hesabı gerekmez; yalnızca ücretsiz bir GitHub hesabı ve yöneticinin davetini kabul etmiş olmanız yeterli.</p>
-    </div>
-    <div class="kart cta">
-      <h2>Yeni istek</h2>
-      <a class="btn" href="https://github.com/onurcoskun616/teftis/issues/new?template=istek.yml" target="_blank" rel="noopener">İstek yaz ↗</a>
-      <a class="btn ikincil" href="https://github.com/onurcoskun616/teftis/issues?q=is%3Aopen+label%3Aistek" target="_blank" rel="noopener">Açık istekleri gör</a>
-      <p class="not" style="margin:0">İsteğinize cevap gelince GitHub size e-posta ile haber verir.</p>
-    </div>
+  <div class="baslik">
+    <h1>Programda neyi değiştirelim?</h1>
+    <p>Kendi cümlelerinizle yazın. Claude genellikle birkaç dakika içinde programa ekler ve isteğinizin altına <b>deneme linki</b> yazar. Claude hesabı gerekmez.</p>
   </div>
+
+  <section class="kart form" id="istekFormu">
+    <div class="fadim"><span class="no">1</span><label for="istekMetni">İsteğinizi yazın</label></div>
+    <textarea id="istekMetni" rows="6" placeholder="Örnek: Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor, tek satırda kalsın."></textarea>
+    <p class="not kucuk">Neyi, nerede istediğinizi yazın; mümkünse olması gereken cümleyi de ekleyin. <b>T.C. kimlik no, işçi ya da işveren adı yazmayın</b> — istekler herkese açıktır.</p>
+
+    <div class="fadim"><span class="no">2</span><span>Hangi bölümle ilgili? <span class="not">(isteğe bağlı)</span></span></div>
+    <div class="cipler" id="bolumler"></div>
+
+    <div class="fadim"><span class="no">3</span><span>Gönderin</span></div>
+    <div class="gonder-satir">
+      <button class="btn buyuk" id="gonder" type="button">İsteği gönder ↗</button>
+      <span class="hata" id="hata" role="alert"></span>
+    </div>
+    <ol class="sonra">
+      <li>GitHub sayfası isteğiniz <b>yazılmış olarak</b> açılır (ilk seferde GitHub hesabınızla giriş yapmanız istenir).</li>
+      <li>Belge ya da ekran görüntüsü eklemek isterseniz o sayfadaki alt kutuya sürükleyin.</li>
+      <li>En alttaki yeşil <b>Create</b> düğmesine basın. Bu kadar — cevap gelince GitHub size e-posta gönderir.</li>
+    </ol>
+  </section>
 
   <section>
     <h2>Bir istek nasıl yayına girer?</h2>
     <div class="akis">
-      <div class="adim siz"><h3>İsteği yazın</h3><p>Formu doldurun, gerekirse belge ekleyin.</p></div>
+      <div class="adim siz"><h3>İsteği yazın</h3><p>Yukarıdaki kutuya yazıp gönderin, gerekirse belge ekleyin.</p></div>
       <div class="adim"><h3>Claude işler</h3><p>Gönderdiğiniz anda başlar; programı değiştirir ve otomatik testleri çalıştırır. Gerekirse önce soru sorar.</p></div>
       <div class="adim siz"><h3>Önizlemede deneyin</h3><p>İsteğinizin altına yazılan linkten deneyin. Gerçek verileriniz etkilenmez. Düzeltme gerekiyorsa yorum yazın.</p></div>
       <div class="adim"><h3>Yönetici onaylar</h3><p>Yönetici değişikliği inceleyip onaylar.</p></div>
@@ -94,29 +119,20 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
     </div>
   </section>
 
-  <section class="iki">
+  <section>
     <div class="kart">
-      <h2>Bir kerelik hazırlık</h2>
+      <h2>İlk kez mi kullanıyorsunuz? (bir kerelik)</h2>
       <ol class="liste">
         <li><a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>’dan ücretsiz bir hesap açın.</li>
         <li>Kullanıcı adınızı yöneticiye iletin.</li>
         <li>E-postanıza gelen depo davetini kabul edin. Yalnızca davetli kişilerin istekleri işlenir.</li>
       </ol>
     </div>
-    <div class="kart">
-      <h2>İyi bir istek nasıl yazılır?</h2>
-      <ol class="liste">
-        <li><b>Neyi, nerede</b> istediğinizi yazın: hangi adım (ör. 1. Aşama Tutanak), hangi bölüm, hangi cümle.</li>
-        <li>Mümkünse <b>olması gereken metni</b> verin ya da örnek belge ekleyin.</li>
-        <li>Her istekte <b>tek konu</b> olsun; ayrı konular için ayrı istek açın.</li>
-        <li>Claude soru sorarsa aynı sayfaya yorum yazarak cevaplayın.</li>
-      </ol>
-    </div>
   </section>
 
   <section>
     <h2>Örnek istekler</h2>
-    <p class="not" style="margin-top:-6px">“Bu örnekle istek aç” formu bu metinle doldurur; düzenleyip gönderebilirsiniz.</p>
+    <p class="not" style="margin-top:-6px">“Bu örneği kullan” yukarıdaki kutuyu doldurur; düzenleyip gönderebilirsiniz.</p>
     <div class="ornekler" id="ornekler"></div>
   </section>
 
@@ -164,16 +180,36 @@ footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
   var tarih = function (s) { try { return new Date(s).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ' ' + new Date(s).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
   var getJ = function (u) { return fetch(u, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
 
-  /* Örnek istekler — form alanını doldurarak açar */
+  /* Basit istek formu → GitHub'da doldurulmuş istek sayfası */
+  var BOLUMLER = ['İşyeri listesi / görev listesi yükleme', 'Görev ve künye', 'İşçi ifadeleri', 'Evrak isteme bildirimi', '1. Aşama tutanak / tespitler', 'Noksanlık bildirimi', '2. Aşama tutanak', 'Rapor', 'Tespit kataloğu / ayarlar', 'Diğer'];
+  var kutu = document.getElementById('istekMetni'), secili = '', hata = document.getElementById('hata');
+  var cip = document.getElementById('bolumler');
+  var cipCiz = function () { cip.innerHTML = BOLUMLER.map(function (b) { return '<button type="button" class="cip' + (b === secili ? ' secili' : '') + '" aria-pressed="' + (b === secili) + '" data-b="' + esc(b) + '">' + esc(b) + '</button>'; }).join(''); };
+  cip.addEventListener('click', function (e) { var b = e.target.closest('.cip'); if (!b) return; secili = secili === b.dataset.b ? '' : b.dataset.b; cipCiz(); taslakYaz(); });
+  var taslakYaz = function () { try { localStorage.setItem('teftis_istek_taslak', JSON.stringify({ m: kutu.value, b: secili })); } catch (e) {} };
+  try { var t = JSON.parse(localStorage.getItem('teftis_istek_taslak') || 'null'); if (t) { kutu.value = t.m || ''; secili = t.b || ''; } } catch (e) {}
+  cipCiz();
+  kutu.addEventListener('input', function () { hata.textContent = ''; taslakYaz(); });
+  var baslikYap = function (m) { var b = m.replace(/\s+/g, ' ').trim(); if (b.length > 70) b = b.slice(0, 70).replace(/\s+\S*$/, '') + '…'; return '[İstek] ' + b; };
+  document.getElementById('gonder').addEventListener('click', function () {
+    var m = kutu.value.trim();
+    if (m.length < 10) { hata.textContent = 'Lütfen isteğinizi birkaç kelimeyle yazın.'; kutu.focus(); return; }
+    var u = 'https://github.com/' + REPO + '/issues/new?template=istek.yml&labels=istek&title=' + encodeURIComponent(baslikYap(m)) + '&istek=' + encodeURIComponent(m) + (secili ? '&adim=' + encodeURIComponent(secili) : '');
+    window.open(u, '_blank', 'noopener');
+    try { localStorage.removeItem('teftis_istek_taslak'); } catch (e) {}
+  });
+
+  /* Örnek istekler — formu doldurur */
   var ornekler = [
-    ['Yeni özellik / tespit', '1. Aşama tutanak / tespitler', 'Fazla çalışma bölümüne “fazla çalışma onayının her yıl başında yenilenmemesi” diye yeni bir tespit ekle.'],
-    ['Diğer', 'Noksanlık bildirimi', 'Noksanlıklar ve aykırılıklar bildiriminde verilen süre varsayılan olarak 30 gün olsun.'],
-    ['Hata (program çalışmıyor, donuyor, yanlış hesaplıyor)', 'İşyeri listesi / görev listesi yükleme', 'Eklediğim görev listesi PDF’i programda okunmuyor, “satır bulunamadı” diyor. Bu düzendeki PDF’ler de okunabilsin.'],
-    ['Belgede yanlış ya da eksik metin', 'Rapor', 'Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor; tek satırda kalsın.'],
-    ['Yeni özellik / tespit', 'İşyeri listesi / görev listesi yükleme', 'İşyeri listesinde her işyerinin yanında işveren vekilinin telefonunu da göster.']
+    ['1. Aşama tutanak / tespitler', 'Fazla çalışma bölümüne “fazla çalışma onayının her yıl başında yenilenmemesi” diye yeni bir tespit ekle.'],
+    ['Noksanlık bildirimi', 'Noksanlıklar ve aykırılıklar bildiriminde verilen süre varsayılan olarak 30 gün olsun.'],
+    ['İşyeri listesi / görev listesi yükleme', 'Eklediğim görev listesi PDF’i programda okunmuyor, “satır bulunamadı” diyor. Bu düzendeki PDF’ler de okunabilsin.'],
+    ['Rapor', 'Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor; tek satırda kalsın.'],
+    ['İşyeri listesi / görev listesi yükleme', 'İşyeri listesinde her işyerinin yanında işveren vekilinin telefonunu da göster.']
   ];
-  var formLink = function (o) { return 'https://github.com/' + REPO + '/issues/new?template=istek.yml&tur=' + encodeURIComponent(o[0]) + '&adim=' + encodeURIComponent(o[1]) + '&istek=' + encodeURIComponent(o[2]) + '&title=' + encodeURIComponent('[İstek] ' + o[2].slice(0, 60)); };
-  document.getElementById('ornekler').innerHTML = ornekler.map(function (o) { return '<div class="ornek"><p>' + esc(o[2]) + '</p><a href="' + esc(formLink(o)) + '" target="_blank" rel="noopener">Bu örnekle istek aç ↗</a></div>'; }).join('');
+  var ol = document.getElementById('ornekler');
+  ol.innerHTML = ornekler.map(function (o, i) { return '<div class="ornek"><p>' + esc(o[1]) + '</p><button type="button" class="ornek-btn" data-i="' + i + '">Bu örneği kullan</button></div>'; }).join('');
+  ol.addEventListener('click', function (e) { var b = e.target.closest('.ornek-btn'); if (!b) return; var o = ornekler[+b.dataset.i]; kutu.value = o[1]; hata.textContent = ''; secili = o[0]; cipCiz(); taslakYaz(); document.getElementById('istekFormu').scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function () { kutu.focus(); }, 400); });
 
   /* Veriler */
   Promise.all([
