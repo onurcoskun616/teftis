@@ -2,8 +2,9 @@ name: İstek geldi
 
 # Bir müfettiş "istek" etiketli konu açtığında ya da böyle bir konuya yorum yazdığında,
 # yöneticinin Claude hesabındaki "gelen isteği işle" görevini ANINDA başlatır.
-# Gerekli ayar: Settings → Secrets and variables → Actions → New repository secret
-#   Ad: CLAUDE_ISTEK_TOKEN   Değer: claude.ai/code/routines → görev → API tetikleyicisi → Generate token
+# Gerekli ayar: Settings → Secrets and variables → Actions → New repository secret (iki adet)
+#   CLAUDE_ISTEK_URL   : claude.ai/code/routines → görev → API tetikleyicisi penceresindeki adres (…/routines/trig_…/fire)
+#   CLAUDE_ISTEK_TOKEN : aynı pencerede “Generate token” ile üretilen anahtar
 on:
   issues:
     types: [opened, reopened]
@@ -37,10 +38,10 @@ jobs:
         env:
           TOKEN: ${{ secrets.CLAUDE_ISTEK_TOKEN }}
           NO: ${{ github.event.issue.number }}
-          GOREV_URL: https://api.anthropic.com/v1/claude_code/routines/trig_01Vst3X6knxTpRNQeAUf47ov/fire
+          GOREV_URL: ${{ secrets.CLAUDE_ISTEK_URL }}
         run: |
-          if [ -z "$TOKEN" ]; then
-            echo "::warning::CLAUDE_ISTEK_TOKEN tanımlı değil; istek #$NO işlenmek üzere gönderilemedi. Ayarlar → Secrets → Actions bölümünden ekleyin."
+          if [ -z "$TOKEN" ] || [ -z "$GOREV_URL" ]; then
+            echo "::warning::CLAUDE_ISTEK_URL veya CLAUDE_ISTEK_TOKEN tanımlı değil; istek #$NO işlenmek üzere gönderilemedi. Ayarlar → Secrets → Actions bölümünden ekleyin."
             exit 0
           fi
           kod=$(curl -sS -o cevap.json -w '%{http_code}' -X POST "$GOREV_URL" \

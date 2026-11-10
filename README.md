@@ -34,7 +34,7 @@ Programı kullanan müfettişler isteklerini **GitHub'daki istek formuyla** yaza
 
 - Geliştirici sayfası: **https://onurcoskun616.github.io/teftis/gelistir/**
 - İstek yaz: https://github.com/onurcoskun616/teftis/issues/new?template=istek.yml
-- Claude, depodaki `CLAUDE.md` rehberine göre çalışır (bkz. “Kullanıcı isteklerini işleme”). Yalnızca depoya davetli kişilerin istekleri işlenir. Görevi başlatan iş akışı: `.github/workflows/istek.yml` (gizli anahtar: `CLAUDE_ISTEK_TOKEN`).
+- Claude, depodaki `CLAUDE.md` rehberine göre çalışır (bkz. “Kullanıcı isteklerini işleme”). Yalnızca depoya davetli kişilerin istekleri işlenir. Görevi başlatan iş akışı: `.github/workflows/istek.yml` (gizli değerler: `CLAUDE_ISTEK_URL`, `CLAUDE_ISTEK_TOKEN`).
 - Her istek için gerçek verilerden ayrı saklanan bir önizleme oluşur: `https://onurcoskun616.github.io/teftis/onizleme/istek-<no>/`
 - Değişiklik, yönetici pull request'i onaylayınca canlı sürüme geçer ve istek kapanır.
 - Testleri yerelde çalıştırmak için: `npm install && npx playwright install chromium && npm test`
