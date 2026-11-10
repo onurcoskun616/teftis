@@ -1,6 +1,7 @@
 # Değişiklik geçmişi
 
 ## v8.6 — 10.11.2026
+- **İstek sayfası:** Müfettişler artık GitHub'ı hiç görmeden, ortak şifre ve adlarıyla girdikleri sade bir sayfadan istek yazıyor; Claude'un cevabını, deneme linkini ve “Onaylıyorum” düğmesini aynı sayfada görüyor. GitHub hesabı gerekmiyor.
 - Değişiklikleri artık **isteği yazan müfettiş onaylıyor**: deneme linkinden kontrol edip isteğin altına “Onaylıyorum” yazınca Claude testleri son kez kontrol edip değişikliği herkes için yayına alıyor.
 - Geliştirici sayfası sadeleşti: yalnızca istek formu, akış ve ilk kullanım adımları kaldı.
 
