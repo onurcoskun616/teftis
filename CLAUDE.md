@@ -19,7 +19,8 @@ Bu depo, iş müfettişlerinin programlı teftiş belgelerini (evrak isteme, 1. 
 | `tests/ornekler/` | Testlerin kullandığı **tamamen kurgusal** örnek dosyalar. |
 | `tests/kutuphane-ozet.json` | Hazır kütüphanelerin özetleri (değiştirilmediklerini doğrular). |
 | `tools/site-olustur.mjs` | GitHub Pages sitesini (canlı sürüm + önizlemeler) oluşturur. |
-| `gelistir/index.html` | Müfettişlerin gördüğü geliştirici sayfası. |
+| `istek-sunucu/` | Müfettişlerin istek yazdığı sayfa (Render: https://teftis-istek.onrender.com). |
+| `gelistir/index.html` | Eski geliştirici sayfası; istek sayfasına yönlendirir. |
 | `.github/workflows/` | Testler ve site dağıtımı. |
 
 ### `index.html` içindeki `<script>` blokları (sırasıyla)

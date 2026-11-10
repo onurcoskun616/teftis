@@ -3,163 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Geliştirici Sayfası — Teftiş Otomasyon Sistemi</title>
+<title>İstek Sayfası — Teftiş Otomasyon Sistemi</title>
+<meta http-equiv="refresh" content="0; url=https://teftis-istek.onrender.com/">
+<link rel="canonical" href="https://teftis-istek.onrender.com/">
 <style>
-:root{--bg:#f3f5f9;--surface:#fff;--surface2:#f7f9fc;--ink:#1a2233;--mut:#5f6b83;--line:#e2e7f0;--acc:#1d4e89;--acch:#17406f;--accsoft:#e9f1fb;--ok:#177245;--okbg:#e6f5ed;--warn:#7a5000;--warnbg:#fff3d1;--bad:#b42318;--badbg:#fdecea;--top1:#0f2a4d;--top2:#1d4e89;--sh:0 1px 2px rgba(16,32,60,.06),0 6px 18px rgba(16,32,60,.05)}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1420;--surface:#152033;--surface2:#192740;--ink:#e6ebf5;--mut:#9aa7c0;--line:#25324a;--acc:#5a9bec;--acch:#7ab0f2;--accsoft:#1a2c49;--ok:#52d092;--okbg:#12362b;--warn:#f2c14e;--warnbg:#3a3114;--bad:#ff8f84;--badbg:#3b1b1d;--top1:#080e19;--top2:#14213a;--sh:0 1px 2px rgba(0,0,0,.45),0 8px 22px rgba(0,0,0,.25)}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:var(--acc)}
-header{background:linear-gradient(90deg,var(--top1),var(--top2));color:#fff}
-.bas{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.bas b{font-size:16px;font-weight:650}.bas small{display:block;opacity:.75;font-size:12.5px}
-.bas nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
-.bas nav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);padding:6px 12px;border-radius:8px;font-size:13.5px}
-.bas nav a:hover{background:rgba(255,255,255,.22)}
-main{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
-h1{font-size:28px;line-height:1.25;margin:0 0 10px;letter-spacing:-.2px}
-h2{font-size:19px;margin:0 0 12px}
-h3{font-size:15.5px;margin:0 0 6px}
-.giris{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:start;margin-bottom:28px}
-.giris p{color:var(--mut);margin:0 0 10px;font-size:16px}
-.kart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--sh)}
-.cta{display:flex;flex-direction:column;gap:12px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--acc);color:#fff;text-decoration:none;font-weight:600;padding:12px 18px;border-radius:10px;border:0;font-size:15.5px;cursor:pointer}
-.btn:hover{background:var(--acch)}
-.btn.ikincil{background:transparent;color:var(--acc);border:1px solid var(--line)}
-.btn.ikincil:hover{background:var(--accsoft)}
-.not{color:var(--mut);font-size:13.5px}
-code,.kod{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;background:var(--accsoft);padding:1px 6px;border-radius:5px}
-section{margin-bottom:30px}
-.akis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:a}
-.adim{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
-.adim::before{counter-increment:a;content:counter(a);display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:13px;align-items:center;justify-content:center;margin-bottom:8px}
-.adim p{margin:0;color:var(--mut);font-size:13.5px}
-.adim.siz::before{background:var(--ok)}
-.iki{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-ol.liste{margin:0;padding-left:20px}ol.liste li{margin-bottom:8px}
-.ornekler{display:grid;gap:10px}
-.ornek{display:flex;gap:12px;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.ornek p{margin:0;flex:1}
-.ornek-btn{flex:none;font:inherit;font-size:13px;padding:6px 11px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--acc);cursor:pointer;white-space:nowrap}
-.ornek-btn:hover{background:var(--accsoft)}
-.baslik{margin-bottom:18px}.baslik p{color:var(--mut);font-size:16px;margin:0;max-width:720px}
-.form{margin-bottom:30px;border-top:4px solid var(--acc)}
-.fadim{display:flex;align-items:center;gap:10px;font-weight:650;font-size:16px;margin:18px 0 10px}.fadim:first-child{margin-top:0}
-.fadim .no{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-size:13px;align-items:center;justify-content:center;flex:none}
-.fadim .not{font-weight:400}
-textarea{width:100%;font:inherit;font-size:16px;line-height:1.5;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);resize:vertical;min-height:130px}
-textarea:focus{outline:2px solid var(--acc);outline-offset:1px;background:var(--surface)}
-.kucuk{margin:6px 0 0}
-.cipler{display:flex;flex-wrap:wrap;gap:8px}
-.cip{font:inherit;font-size:14px;padding:7px 12px;border-radius:20px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer}
-.cip:hover{border-color:var(--acc)}.cip.secili{background:var(--acc);border-color:var(--acc);color:#fff}
-.gonder-satir{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.btn.buyuk{font-size:17px;padding:14px 26px}
-.hata{color:var(--bad);font-size:14px;font-weight:600}
-ol.sonra{margin:14px 0 0;padding-left:20px;color:var(--mut);font-size:14px}ol.sonra li{margin-bottom:4px}
-.uyari{background:var(--warnbg);border:1px solid rgba(160,110,0,.35);color:var(--warn);border-radius:12px;padding:14px 16px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut);font-weight:600}
-.etiket{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.etiket.ok{background:var(--okbg);color:var(--ok)}.etiket.bek{background:var(--warnbg);color:var(--warn)}.etiket.soru{background:var(--badbg);color:var(--bad)}.etiket.yeni{background:var(--accsoft);color:var(--acc)}.etiket.bitti{background:var(--surface2);color:var(--mut);border:1px solid var(--line)}
-.surum h3{margin-top:14px}.surum ul{margin:4px 0 0;padding-left:20px}.surum li{margin-bottom:4px}
-.bos{color:var(--mut);font-style:italic}
-footer{color:var(--mut);font-size:13px;text-align:center;padding:20px}
-@media (max-width:860px){.giris,.iki{grid-template-columns:1fr}.akis{grid-template-columns:1fr 1fr}h1{font-size:24px}}
-@media (max-width:480px){.akis{grid-template-columns:1fr}.ornek{flex-direction:column;align-items:flex-start}.btn.buyuk{width:100%}main{padding:20px 16px 48px}.bas{padding:12px 16px}}
+:root{--bg:#f3f5f9;--ink:#1a2233;--mut:#5f6b83;--acc:#1d4e89}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1420;--ink:#e6ebf5;--mut:#9aa7c0;--acc:#5a9bec}}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;padding:16px;text-align:center}
+a{display:inline-block;margin-top:12px;background:var(--acc);color:#fff;text-decoration:none;font-weight:650;padding:12px 22px;border-radius:10px}
+p{color:var(--mut);margin:0}
 </style>
 </head>
 <body>
-<header>
-  <div class="bas">
-    <div><b>Geliştirici Sayfası</b><small>Teftiş Otomasyon Sistemi</small></div>
-    <nav>
-      <a href="../">Programı aç</a>
-      <a href="https://github.com/onurcoskun616/teftis/issues?q=label%3Aistek">Tüm istekler</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="baslik">
-    <h1>Programda neyi değiştirelim?</h1>
-    <p>Kendi cümlelerinizle yazın. Claude genellikle birkaç dakika içinde programa ekler ve isteğinizin altına <b>deneme linki</b> yazar. Claude hesabı gerekmez.</p>
-  </div>
-
-  <section class="kart form" id="istekFormu">
-    <div class="fadim"><span class="no">1</span><label for="istekMetni">İsteğinizi yazın</label></div>
-    <textarea id="istekMetni" rows="6" placeholder="Örnek: Rapor kapağında Grup Başkanlığı adı iki satıra bölünüyor, tek satırda kalsın."></textarea>
-    <p class="not kucuk">Neyi, nerede istediğinizi yazın; mümkünse olması gereken cümleyi de ekleyin. <b>T.C. kimlik no, işçi ya da işveren adı yazmayın</b> — istekler herkese açıktır.</p>
-
-    <div class="fadim"><span class="no">2</span><span>Hangi bölümle ilgili? <span class="not">(isteğe bağlı)</span></span></div>
-    <div class="cipler" id="bolumler"></div>
-
-    <div class="fadim"><span class="no">3</span><span>Gönderin</span></div>
-    <div class="gonder-satir">
-      <button class="btn buyuk" id="gonder" type="button">İsteği gönder ↗</button>
-      <span class="hata" id="hata" role="alert"></span>
-    </div>
-    <ol class="sonra">
-      <li>GitHub sayfası isteğiniz <b>yazılmış olarak</b> açılır (ilk seferde GitHub hesabınızla giriş yapmanız istenir).</li>
-      <li>Belge ya da ekran görüntüsü eklemek isterseniz o sayfadaki alt kutuya sürükleyin.</li>
-      <li>En alttaki yeşil <b>Create</b> düğmesine basın. Cevap gelince GitHub size e-posta gönderir.</li>
-      <li>Cevaptaki deneme linkinden deneyin; uygunsa altına <b>Onaylıyorum</b> yazın, program herkes için güncellenir.</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Bir istek nasıl yayına girer?</h2>
-    <div class="akis">
-      <div class="adim siz"><h3>İsteği yazın</h3><p>Yukarıdaki kutuya yazıp gönderin, gerekirse belge ekleyin.</p></div>
-      <div class="adim"><h3>Claude işler</h3><p>Gönderdiğiniz anda başlar; programı değiştirir ve otomatik testleri çalıştırır. Gerekirse önce soru sorar.</p></div>
-      <div class="adim siz"><h3>Deneyin</h3><p>İsteğinizin altına yazılan deneme linkinden deneyin. Gerçek verileriniz etkilenmez. Düzeltme gerekiyorsa yorum yazın.</p></div>
-      <div class="adim siz"><h3>Siz onaylayın</h3><p>Uygunsa isteğinizin altına <b>Onaylıyorum</b> yazın.</p></div>
-      <div class="adim"><h3>Herkes için yayında</h3><p>Onayınızdan birkaç dakika sonra program herkes için güncellenir, istek kapanır.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="kart">
-      <h2>İlk kez mi kullanıyorsunuz? (bir kerelik)</h2>
-      <ol class="liste">
-        <li><a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>’dan ücretsiz bir hesap açın.</li>
-        <li>Kullanıcı adınızı yöneticiye iletin.</li>
-        <li>E-postanıza gelen depo davetini kabul edin. Yalnızca davetli kişilerin istekleri işlenir.</li>
-      </ol>
-    </div>
-  </section>
-
-</main>
-<footer>Teftiş Otomasyon Sistemi · Program bilgileri kullanıcının tarayıcısında saklanır, hiçbir sunucuya gönderilmez.</footer>
-
-<script>
-(function () {
-  'use strict';
-  var REPO = 'onurcoskun616/teftis';
-  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-
-  /* Basit istek formu → GitHub'da doldurulmuş istek sayfası */
-  var BOLUMLER = ['İşyeri listesi / görev listesi yükleme', 'Görev ve künye', 'İşçi ifadeleri', 'Evrak isteme bildirimi', '1. Aşama tutanak / tespitler', 'Noksanlık bildirimi', '2. Aşama tutanak', 'Rapor', 'Tespit kataloğu / ayarlar', 'Diğer'];
-  var kutu = document.getElementById('istekMetni'), secili = '', hata = document.getElementById('hata');
-  var cip = document.getElementById('bolumler');
-  var cipCiz = function () { cip.innerHTML = BOLUMLER.map(function (b) { return '<button type="button" class="cip' + (b === secili ? ' secili' : '') + '" aria-pressed="' + (b === secili) + '" data-b="' + esc(b) + '">' + esc(b) + '</button>'; }).join(''); };
-  cip.addEventListener('click', function (e) { var b = e.target.closest('.cip'); if (!b) return; secili = secili === b.dataset.b ? '' : b.dataset.b; cipCiz(); taslakYaz(); });
-  var taslakYaz = function () { try { localStorage.setItem('teftis_istek_taslak', JSON.stringify({ m: kutu.value, b: secili })); } catch (e) {} };
-  try { var t = JSON.parse(localStorage.getItem('teftis_istek_taslak') || 'null'); if (t) { kutu.value = t.m || ''; secili = t.b || ''; } } catch (e) {}
-  cipCiz();
-  kutu.addEventListener('input', function () { hata.textContent = ''; taslakYaz(); });
-  var baslikYap = function (m) { var b = m.replace(/\s+/g, ' ').trim(); if (b.length > 70) b = b.slice(0, 70).replace(/\s+\S*$/, '') + '…'; return '[İstek] ' + b; };
-  document.getElementById('gonder').addEventListener('click', function () {
-    var m = kutu.value.trim();
-    if (m.length < 10) { hata.textContent = 'Lütfen isteğinizi birkaç kelimeyle yazın.'; kutu.focus(); return; }
-    var u = 'https://github.com/' + REPO + '/issues/new?template=istek.yml&labels=istek&title=' + encodeURIComponent(baslikYap(m)) + '&istek=' + encodeURIComponent(m) + (secili ? '&adim=' + encodeURIComponent(secili) : '');
-    window.open(u, '_blank', 'noopener');
-    try { localStorage.removeItem('teftis_istek_taslak'); } catch (e) {}
-  });
-
-})();
-</script>
+<div>
+  <h1 style="font-size:22px;margin:0 0 6px">İstek sayfasına yönlendiriliyorsunuz…</h1>
+  <p>Sayfa ilk açılışta 30–60 saniye içinde yüklenebilir.</p>
+  <a href="https://teftis-istek.onrender.com/">İstek sayfasını aç</a>
+</div>
 </body>
 </html>

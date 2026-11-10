@@ -32,7 +32,7 @@ Girilen tüm bilgiler **yalnızca kullanılan bilgisayarın tarayıcısında** t
 
 Programı kullanan müfettişler isteklerini **GitHub'daki istek formuyla** yazar (ücretsiz GitHub hesabı ve yönetici daveti yeterli; Claude hesabı gerekmez). İstek gönderildiği anda yöneticinin Claude hesabındaki görev **otomatik başlar**: programı değiştirir, test eder, isteğin altına önizleme linki yazar. Kullanım yöneticinin Claude hesabından düşer.
 
-- Geliştirici sayfası: **https://onurcoskun616.github.io/teftis/gelistir/**
+- İstek sayfası (müfettişler buradan girer): **https://teftis-istek.onrender.com** — kod: `istek-sunucu/`
 - İstek yaz: https://github.com/onurcoskun616/teftis/issues/new?template=istek.yml
 - Claude, depodaki `CLAUDE.md` rehberine göre çalışır (bkz. “Kullanıcı isteklerini işleme”). Yalnızca depoya davetli kişilerin istekleri işlenir. Görevi başlatan iş akışı: `.github/workflows/istek.yml` (gizli değerler: `CLAUDE_ISTEK_URL`, `CLAUDE_ISTEK_TOKEN`).
 - Her istek için gerçek verilerden ayrı saklanan bir önizleme oluşur: `https://onurcoskun616.github.io/teftis/onizleme/istek-<no>/`
